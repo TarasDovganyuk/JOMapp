@@ -19,9 +19,12 @@ public class Marathon {
     private String title;
 
 //    @ToString.Exclude
-    @ManyToMany(mappedBy = "marathons")
+    @ManyToMany
+    @JoinTable(name = "marathon_user_link",
+            joinColumns = @JoinColumn(name = "marathon_fk"),
+            inverseJoinColumns = @JoinColumn(name = "user_fk"))
     private List<User> users;
 
-    @OneToMany
+    @OneToMany(mappedBy="marathon")
     private List<Sprint> sprints;
 }

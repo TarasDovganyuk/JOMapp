@@ -26,10 +26,10 @@ public class Sprint {
     @NotNull
     private String title;
 
-    @OneToMany
+    @OneToMany(mappedBy="sprint")
     private List<Task> tasks;
 
     @ManyToOne
-    @JoinColumn(name = "marathon_id", referencedColumnName = "id")
+    @JoinColumn(name = "marathon_fk", referencedColumnName = "id")
     private Marathon marathon;
 }

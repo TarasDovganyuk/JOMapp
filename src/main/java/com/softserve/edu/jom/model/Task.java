@@ -26,10 +26,10 @@ public class Task {
     @UpdateTimestamp
     private LocalDate updated;
 
-    @OneToMany
+    @OneToMany(mappedBy="task")
     private List<Progress> progress;
 
     @ManyToOne
-    @JoinColumn(name = "sprint_id", referencedColumnName = "id")
+    @JoinColumn(name = "sprint_fk", referencedColumnName = "id")
     private Sprint sprint;
 }

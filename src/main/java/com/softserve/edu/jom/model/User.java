@@ -11,6 +11,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(name = "users")
 public class User {
     public enum Role {
         MENTOR, TRAINEE
@@ -40,8 +41,11 @@ public class User {
     @NotNull
     private String password;
 
-////    @ToString.Exclude
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
+//    @ToString.Exclude
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "marathon_user_link",
+            joinColumns = @JoinColumn(name = "user_fk"),
+            inverseJoinColumns = @JoinColumn(name = "marathon_fk"))
     private List<Marathon> marathons;
 
 }
