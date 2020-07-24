@@ -20,9 +20,9 @@ public class Marathon {
 
 //    @ToString.Exclude
     @ManyToMany
-    @JoinTable(name = "marathon_user_link",
-            joinColumns = @JoinColumn(name = "marathon_fk"),
-            inverseJoinColumns = @JoinColumn(name = "user_fk"))
+    @JoinTable(name = "marathon_user",
+            joinColumns = @JoinColumn(name = "marathon_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 
     @OneToMany(mappedBy="marathon")

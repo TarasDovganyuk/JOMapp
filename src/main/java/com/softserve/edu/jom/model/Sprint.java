@@ -30,6 +30,6 @@ public class Sprint {
     private List<Task> tasks;
 
     @ManyToOne
-    @JoinColumn(name = "marathon_fk", referencedColumnName = "id")
+    @JoinColumn(name = "marathon_id", referencedColumnName = "id")
     private Marathon marathon;
 }

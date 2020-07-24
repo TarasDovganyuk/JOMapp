@@ -43,9 +43,9 @@ public class User {
 
 //    @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "marathon_user_link",
-            joinColumns = @JoinColumn(name = "user_fk"),
-            inverseJoinColumns = @JoinColumn(name = "marathon_fk"))
+    @JoinTable(name = "marathon_user",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "marathon_id"))
     private List<Marathon> marathons;
 
 }

@@ -31,11 +31,11 @@ public class Progress {
     private LocalDate updated;
 
     @ManyToOne
-    @JoinColumn(name = "task_fk", referencedColumnName = "id")
+    @JoinColumn(name = "task_id", referencedColumnName = "id")
     private Task task;
 
     @ManyToOne
-    @JoinColumn(name = "trainee_fk", referencedColumnName = "id")
+    @JoinColumn(name = "trainee_id", referencedColumnName = "id")
     private User user;
 
     @Enumerated
