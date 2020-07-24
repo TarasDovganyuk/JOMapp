@@ -7,13 +7,14 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Data
 @Entity
 public class User {
-//    public enum Role {
-//        MENTOR, TRAINEE
-//    }
+    public enum Role {
+        MENTOR, TRAINEE
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,25 +23,25 @@ public class User {
     @NotNull
     private String firstName;
 
-//    @NotNull
-//    @Size(min = 2, max = 20, message =
-//            "Last name must be between 2 and 20 characters")
-//    private String lastName;
-//
+    @NotNull
+    @Size(min = 2, max = 20, message =
+            "Last name must be between 2 and 20 characters")
+    private String lastName;
+
 //    @Column(unique = true)
-//    @NotNull
-//    @Pattern(regexp = ".+@.\\..+", message = "Please provide a valid email address")
-//    private String email;
-//
-//    @NotNull
-//    @Enumerated(EnumType.STRING)
-//    private Role role;
+    @NotNull
+    @Pattern(regexp = ".+@.\\..+", message = "Please provide a valid email address")
+    private String email;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @NotNull
     private String password;
 
-//    @ToString.Exclude
-//    @ManyToMany(mappedBy = "users")
-//    private List<Marathon> marathons;
+////    @ToString.Exclude
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private List<Marathon> marathons;
 
 }

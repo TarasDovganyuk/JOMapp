@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-//@Repository
+@Repository
 public interface UserRepository {
-//    List<User> getAllByRole(User.Role role);
+    List<User> getAllByRole(User.Role role);
 }
