@@ -1,10 +1,11 @@
 package com.softserve.edu.jom.repository;
 
-import com.softserve.edu.jom.model.Marathon;
+import com.softserve.edu.jom.model.Progress;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MarathonRepository extends JpaRepository<Marathon, Long> {
+public interface ProgressRepository extends JpaRepository<Progress, Long> {
+
 
 }
