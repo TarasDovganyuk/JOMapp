@@ -11,20 +11,25 @@ import javax.transaction.Transactional;
 
 @Transactional
 @Service
-public class TaskServiceImpl implements TaskService{
+public class TaskServiceImpl implements TaskService {
 
-   private TaskRepository taskRepository;
+    private TaskRepository taskRepository;
 
-   @Autowired
-   public TaskServiceImpl(TaskRepository taskRepository) {
-       this.taskRepository = taskRepository;
-   }
-
+    @Autowired
+    public TaskServiceImpl(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
 
     @Override
     public Task addTaskToSprint(Task task, Sprint sprint) {
-       task.setSprint(sprint);
-        return taskRepository.save(task);
+        Task newTask = new Task();
+        newTask.setCreated(task.getCreated());
+        newTask.setTitle(task.getTitle());
+        newTask.setSprint(sprint);
+        if (task.getUpdated() != null) {
+            newTask.setUpdated(task.getUpdated());
+        }
+        return taskRepository.save(newTask);
     }
 
     @Override

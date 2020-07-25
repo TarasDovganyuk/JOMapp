@@ -27,7 +27,12 @@ public class SprintServiceImpl implements SprintService {
 
     @Override
     public boolean addSprintToMarathon(Sprint sprint, Marathon marathon) {
-        return false; //TODO
+        Sprint newSprint = new Sprint();
+        newSprint.setTitle(sprint.getTitle());
+        newSprint.setMarathon(marathon);
+        newSprint.setStartDate(sprint.getStartDate());
+        newSprint.setFinish(sprint.getFinish());
+        return sprintRepository.save(newSprint) != null;
     }
 
     @Override
@@ -38,6 +43,13 @@ public class SprintServiceImpl implements SprintService {
     @Override
     public boolean updateSprint(Sprint sprint) {
 
-        return false; //TODO
+        Sprint newSprint = new Sprint();
+        newSprint.setStartDate(sprint.getStartDate());
+        newSprint.setFinish(sprint.getFinish());
+        newSprint.setTitle(sprint.getTitle());
+        if (sprint.getMarathon() != null) {
+            newSprint.setMarathon(sprint.getMarathon());
+        }
+        return sprintRepository.save(newSprint) != null;
     }
 }
