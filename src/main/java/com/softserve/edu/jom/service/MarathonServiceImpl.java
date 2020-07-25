@@ -1,7 +1,9 @@
 package com.softserve.edu.jom.service;
 
+import com.softserve.edu.jom.exception.MarathonServiceException;
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.repository.MarathonRepository;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +37,11 @@ public class MarathonServiceImpl implements MarathonService {
     }
 
     @Override
-    public Marathon createOrUpdate(Marathon marathon) {
-        return marathonRepository.save(marathon);
+    public Marathon createOrUpdate(Marathon marathon) throws MarathonServiceException {
+        Validate.notNull(marathon.getTitle(), "Title must be not null");
+        Marathon newMarathon = new Marathon();
+        newMarathon.setTitle(marathon.getTitle());
+        return marathonRepository.save(newMarathon);
     }
 
 }

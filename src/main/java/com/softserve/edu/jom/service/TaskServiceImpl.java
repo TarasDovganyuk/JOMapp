@@ -1,8 +1,10 @@
 package com.softserve.edu.jom.service;
 
+import com.softserve.edu.jom.exception.TaskServiceException;
 import com.softserve.edu.jom.model.Sprint;
 import com.softserve.edu.jom.model.Task;
 import com.softserve.edu.jom.repository.TaskRepository;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task addTaskToSprint(Task task, Sprint sprint) {
+    public Task addTaskToSprint(Task task, Sprint sprint) throws TaskServiceException {
+        Validate.notNull(task.getTitle(), "Title must be not null");
+        Validate.notNull(task.getCreated(), "Created date must be not null");
+
         Task newTask = new Task();
         newTask.setCreated(task.getCreated());
         newTask.setTitle(task.getTitle());

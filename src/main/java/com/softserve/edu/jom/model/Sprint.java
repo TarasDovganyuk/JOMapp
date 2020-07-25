@@ -18,10 +18,10 @@ public class Sprint {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @CreationTimestamp
+    @NotNull
     private LocalDate startDate;
 
-    @UpdateTimestamp
+    @NotNull
     private LocalDate finish;
 
     @NotNull

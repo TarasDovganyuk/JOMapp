@@ -1,8 +1,10 @@
 package com.softserve.edu.jom.service;
 
+import com.softserve.edu.jom.exception.MarathonServiceException;
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.model.Sprint;
 import com.softserve.edu.jom.repository.SprintRepository;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +28,15 @@ public class SprintServiceImpl implements SprintService {
     }
 
     @Override
-    public boolean addSprintToMarathon(Sprint sprint, Marathon marathon) {
+    public Sprint getSprintById(Long id) {
+        return sprintRepository.getSprintById(id);
+    }
+
+    @Override
+    public boolean addSprintToMarathon(Sprint sprint, Marathon marathon) throws MarathonServiceException {
+        Validate.notNull(sprint.getTitle(), "Title must be not null");
+        Validate.notNull(sprint.getStartDate(), "Start date must be not null");
+        Validate.notNull(sprint.getFinish(), "Finish date must be not null");
         Sprint newSprint = new Sprint();
         newSprint.setTitle(sprint.getTitle());
         newSprint.setMarathon(marathon);
@@ -36,13 +46,10 @@ public class SprintServiceImpl implements SprintService {
     }
 
     @Override
-    public Sprint getSprintById(Long id) {
-        return sprintRepository.getSprintById(id);
-    }
-
-    @Override
-    public boolean updateSprint(Sprint sprint) {
-
+    public boolean updateSprint(Sprint sprint) throws MarathonServiceException {
+        Validate.notNull(sprint.getTitle(), "Title must be not null");
+        Validate.notNull(sprint.getStartDate(), "Start date must be not null");
+        Validate.notNull(sprint.getFinish(), "Finish date must be not null");
         Sprint newSprint = new Sprint();
         newSprint.setStartDate(sprint.getStartDate());
         newSprint.setFinish(sprint.getFinish());
