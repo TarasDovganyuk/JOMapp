@@ -26,7 +26,8 @@ public class Progress {
     private LocalDate started;
 
     @NotNull
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
 
     @UpdateTimestamp
     private LocalDate updated;
@@ -40,9 +41,4 @@ public class Progress {
     @ManyToOne
     @JoinColumn(name = "trainee_id", referencedColumnName = "id")
     private User user;
-
-    @Enumerated
-    private TaskStatus taskStatus;
-
-
 }

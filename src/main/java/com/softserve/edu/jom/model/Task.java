@@ -28,7 +28,7 @@ public class Task {
     private LocalDate updated;
 
     @ToString.Exclude
-    @OneToMany(mappedBy="task")
+    @OneToMany(mappedBy = "task", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Progress> progress;
 
     @ToString.Exclude
