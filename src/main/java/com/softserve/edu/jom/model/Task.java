@@ -27,9 +27,11 @@ public class Task {
     @UpdateTimestamp
     private LocalDate updated;
 
+    @ToString.Exclude
     @OneToMany(mappedBy="task")
     private List<Progress> progress;
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "sprint_id", referencedColumnName = "id")
     private Sprint sprint;
