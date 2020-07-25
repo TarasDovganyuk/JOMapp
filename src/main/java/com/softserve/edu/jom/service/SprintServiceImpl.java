@@ -1,6 +1,7 @@
 package com.softserve.edu.jom.service;
 
 import com.softserve.edu.jom.exception.MarathonServiceException;
+import com.softserve.edu.jom.exception.SprintServiceException;
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.model.Sprint;
 import com.softserve.edu.jom.repository.SprintRepository;
@@ -33,29 +34,39 @@ public class SprintServiceImpl implements SprintService {
     }
 
     @Override
-    public boolean addSprintToMarathon(Sprint sprint, Marathon marathon) throws MarathonServiceException {
-        Validate.notNull(sprint.getTitle(), "Title must be not null");
-        Validate.notNull(sprint.getStartDate(), "Start date must be not null");
-        Validate.notNull(sprint.getFinish(), "Finish date must be not null");
+    public boolean addSprintToMarathon(Sprint sprint, Marathon marathon) {
         Sprint newSprint = new Sprint();
-        newSprint.setTitle(sprint.getTitle());
-        newSprint.setMarathon(marathon);
-        newSprint.setStartDate(sprint.getStartDate());
-        newSprint.setFinish(sprint.getFinish());
+        try {
+            Validate.notNull(sprint.getTitle(), "Title must be not null");
+            Validate.notNull(sprint.getStartDate(), "Start date must be not null");
+            Validate.notNull(sprint.getFinish(), "Finish date must be not null");
+
+            newSprint.setTitle(sprint.getTitle());
+            newSprint.setMarathon(marathon);
+            newSprint.setStartDate(sprint.getStartDate());
+            newSprint.setFinish(sprint.getFinish());
+        } catch (Exception e) {
+            throw new SprintServiceException(e.getMessage(), e);
+        }
         return sprintRepository.save(newSprint) != null;
     }
 
+
     @Override
-    public boolean updateSprint(Sprint sprint) throws MarathonServiceException {
-        Validate.notNull(sprint.getTitle(), "Title must be not null");
-        Validate.notNull(sprint.getStartDate(), "Start date must be not null");
-        Validate.notNull(sprint.getFinish(), "Finish date must be not null");
+    public boolean updateSprint(Sprint sprint) {
         Sprint newSprint = new Sprint();
-        newSprint.setStartDate(sprint.getStartDate());
-        newSprint.setFinish(sprint.getFinish());
-        newSprint.setTitle(sprint.getTitle());
-        if (sprint.getMarathon() != null) {
-            newSprint.setMarathon(sprint.getMarathon());
+        try {
+            Validate.notNull(sprint.getTitle(), "Title must be not null");
+            Validate.notNull(sprint.getStartDate(), "Start date must be not null");
+            Validate.notNull(sprint.getFinish(), "Finish date must be not null");
+            newSprint.setStartDate(sprint.getStartDate());
+            newSprint.setFinish(sprint.getFinish());
+            newSprint.setTitle(sprint.getTitle());
+            if (sprint.getMarathon() != null) {
+                newSprint.setMarathon(sprint.getMarathon());
+            }
+        } catch (Exception e) {
+            throw new SprintServiceException(e.getMessage(), e);
         }
         return sprintRepository.save(newSprint) != null;
     }

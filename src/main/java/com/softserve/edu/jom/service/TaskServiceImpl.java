@@ -23,16 +23,19 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task addTaskToSprint(Task task, Sprint sprint) throws TaskServiceException {
-        Validate.notNull(task.getTitle(), "Title must be not null");
-        Validate.notNull(task.getCreated(), "Created date must be not null");
-
+    public Task addTaskToSprint(Task task, Sprint sprint) {
         Task newTask = new Task();
-        newTask.setCreated(task.getCreated());
-        newTask.setTitle(task.getTitle());
-        newTask.setSprint(sprint);
-        if (task.getUpdated() != null) {
-            newTask.setUpdated(task.getUpdated());
+        try {
+            Validate.notNull(task.getTitle(), "Title must be not null");
+
+            newTask.setCreated(task.getCreated());
+            newTask.setTitle(task.getTitle());
+            newTask.setSprint(sprint);
+            if (task.getUpdated() != null) {
+                newTask.setUpdated(task.getUpdated());
+            }
+        } catch (Exception e) {
+            throw new TaskServiceException(e.getMessage(), e);
         }
         return taskRepository.save(newTask);
     }

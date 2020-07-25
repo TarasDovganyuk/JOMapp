@@ -37,11 +37,13 @@ public class MarathonServiceImpl implements MarathonService {
     }
 
     @Override
-    public Marathon createOrUpdate(Marathon marathon) throws MarathonServiceException {
-        Validate.notNull(marathon.getTitle(), "Title must be not null");
-        Marathon newMarathon = new Marathon();
-        newMarathon.setTitle(marathon.getTitle());
-        return marathonRepository.save(newMarathon);
+    public Marathon createOrUpdate(Marathon marathon) {
+        try {
+            Validate.notNull(marathon.getTitle(), "Title must be not null");
+            return marathonRepository.save(marathon);
+        } catch (Exception e) {
+            throw new MarathonServiceException(e.getMessage(), e);
+        }
     }
 
 }
