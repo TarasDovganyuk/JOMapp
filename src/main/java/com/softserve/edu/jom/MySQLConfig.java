@@ -12,8 +12,12 @@ import javax.sql.DataSource;
 @Configuration
 @PropertySource("classpath:local.db.properties")
 public class MySQLConfig {
+    private final Environment env;
+
     @Autowired
-    private Environment env;
+    public MySQLConfig(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public DataSource datasource() {
