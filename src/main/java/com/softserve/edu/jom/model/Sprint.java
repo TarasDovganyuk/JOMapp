@@ -1,6 +1,7 @@
 package com.softserve.edu.jom.model;
 
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -26,9 +27,11 @@ public class Sprint {
     @NotNull
     private String title;
 
+    @ToString.Exclude
     @OneToMany(mappedBy="sprint")
     private List<Task> tasks;
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "marathon_id", referencedColumnName = "id")
     private Marathon marathon;

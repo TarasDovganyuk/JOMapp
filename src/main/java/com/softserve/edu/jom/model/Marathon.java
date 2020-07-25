@@ -25,6 +25,7 @@ public class Marathon {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 
+    @ToString.Exclude
     @OneToMany(mappedBy="marathon")
     private List<Sprint> sprints;
 }
