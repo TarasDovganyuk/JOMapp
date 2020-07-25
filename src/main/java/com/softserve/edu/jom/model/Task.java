@@ -1,7 +1,6 @@
 package com.softserve.edu.jom.model;
 
 import lombok.Data;
-import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -28,11 +27,9 @@ public class Task {
     @UpdateTimestamp
     private LocalDateTime updated;
 
-    @ToString.Exclude
     @OneToMany(mappedBy = "task")
     private Set<Progress> progress = new HashSet<>(0);
 
-    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "sprint_id", referencedColumnName = "id")
     private Sprint sprint;

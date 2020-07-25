@@ -11,11 +11,11 @@ import javax.sql.DataSource;
 
 @Configuration
 @PropertySource("classpath:local.db.properties")
-public class MySQLConfig {
+public class DatabaseConfig {
     private final Environment env;
 
     @Autowired
-    public MySQLConfig(Environment env) {
+    public DatabaseConfig(Environment env) {
         this.env = env;
     }
 

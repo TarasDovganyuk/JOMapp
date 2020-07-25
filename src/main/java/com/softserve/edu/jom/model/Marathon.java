@@ -26,7 +26,6 @@ public class Marathon {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new HashSet<>(0);
 
-    @ToString.Exclude
     @OneToMany(mappedBy = "marathon")
     private Set<Sprint> sprints = new HashSet<>(0);
 }

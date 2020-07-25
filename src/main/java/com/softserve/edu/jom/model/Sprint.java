@@ -1,7 +1,6 @@
 package com.softserve.edu.jom.model;
 
 import lombok.Data;
-import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -26,11 +25,9 @@ public class Sprint {
     @NotNull
     private String title;
 
-    @ToString.Exclude
     @OneToMany(mappedBy = "sprint")
     private Set<Task> tasks = new HashSet<>(0);
 
-    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "marathon_id", referencedColumnName = "id")
     private Marathon marathon;
