@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-//    void addTaskToSprint(Task task, Sprint sprint);
     Task getTaskById(Long id);
 }

@@ -20,11 +20,12 @@ public class TaskServiceImpl implements TaskService{
        this.taskRepository = taskRepository;
    }
 
-//    @Override
-//    public void addTaskToSprint(Task task, Sprint sprint) {
-//        task.setSprint(sprint);
-//        taskRepository.save(task);
-//    }
+
+    @Override
+    public Task addTaskToSprint(Task task, Sprint sprint) {
+       task.setSprint(sprint);
+        return taskRepository.save(task);
+    }
 
     @Override
     public Task getTaskById(Long id) {
