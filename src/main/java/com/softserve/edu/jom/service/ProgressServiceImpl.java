@@ -2,17 +2,16 @@ package com.softserve.edu.jom.service;
 
 import com.softserve.edu.jom.exception.ProgressServiceException;
 import com.softserve.edu.jom.model.Progress;
-import com.softserve.edu.jom.model.Sprint;
 import com.softserve.edu.jom.model.Task;
 import com.softserve.edu.jom.model.User;
 import com.softserve.edu.jom.repository.ProgressRepository;
-import com.softserve.edu.jom.repository.SprintRepository;
+import com.softserve.edu.jom.repository.TaskRepository;
 import com.softserve.edu.jom.repository.UserRepository;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -20,7 +19,7 @@ import java.util.List;
 public class ProgressServiceImpl implements ProgressService {
     private ProgressRepository progressRepository;
     private UserRepository userRepository;
-    private SprintRepository sprintRepository;
+    private TaskRepository taskRepository;
 
     @Override
     public Progress getProgressById(Long progressId) {
@@ -36,15 +35,9 @@ public class ProgressServiceImpl implements ProgressService {
             Progress newProgress = new Progress();
             newProgress.setStatus(Progress.TaskStatus.PENDING);
             newProgress.setUser(user);
-            Task newTask = new Task();
-            Validate.notNull(task.getTitle(), "The task title must not be null");
-            newTask.setTitle(task.getTitle());
-            if (task.getSprint() != null && task.getSprint().getId() != null) {
-                Sprint existedSprint = sprintRepository.getOne(task.getSprint().getId());
-                Validate.notNull(existedSprint, "Sprint with id = %s doesn't exist!", task.getSprint().getId());
-                newTask.setSprint(existedSprint);
-            }
-            newProgress.setTask(task);
+            Task existedTask = taskRepository.getOne(task.getId());
+            Validate.notNull(existedTask, "Task with id = %s doesn't exist!", task.getId());
+            newProgress.setTask(existedTask);
             return progressRepository.save(newProgress);
         } catch (Exception e) {
             throw new ProgressServiceException(e.getMessage(), e);
@@ -84,7 +77,7 @@ public class ProgressServiceImpl implements ProgressService {
     }
 
     @Autowired
-    public void setSprintRepository(SprintRepository sprintRepository) {
-        this.sprintRepository = sprintRepository;
+    public void setTaskRepository(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
     }
 }

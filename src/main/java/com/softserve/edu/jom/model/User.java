@@ -7,7 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -46,6 +47,6 @@ public class User {
     @JoinTable(name = "marathon_user",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "marathon_id"))
-    private List<Marathon> marathons;
+    private Set<Marathon> marathons = new HashSet<>();
 
 }

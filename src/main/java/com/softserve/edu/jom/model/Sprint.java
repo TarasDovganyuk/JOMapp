@@ -2,13 +2,12 @@ package com.softserve.edu.jom.model;
 
 import lombok.Data;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -19,17 +18,17 @@ public class Sprint {
     private Long id;
 
     @NotNull
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @NotNull
-    private LocalDate finish;
+    private LocalDateTime finish;
 
     @NotNull
     private String title;
 
     @ToString.Exclude
-    @OneToMany(mappedBy="sprint")
-    private List<Task> tasks;
+    @OneToMany(mappedBy = "sprint")
+    private Set<Task> tasks = new HashSet<>(0);
 
     @ToString.Exclude
     @ManyToOne

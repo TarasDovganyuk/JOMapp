@@ -8,8 +8,8 @@ import com.softserve.edu.jom.repository.UserRepository;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -49,13 +49,9 @@ public class UserServiceImpl implements UserService {
         try {
             Marathon existedMarathon = marathonRepository.getOne(marathon.getId());
             Validate.notNull(existedMarathon, "Marathon with id = %s is not found!", marathon.getId());
-            User newUser = new User();
-            newUser.setLastName(user.getLastName());
-            newUser.setFirstName(user.getFirstName());
-            newUser.setEmail(user.getEmail());
-            newUser.setRole(user.getRole());
-            newUser.setPassword(user.getPassword());
-            existedMarathon.getUsers().add(newUser);
+            User existedUser = userRepository.getOne(user.getId());
+            Validate.notNull(existedUser, "User with id = %s is not found!", user.getId());
+            existedMarathon.getUsers().add(user);
             return marathonRepository.save(existedMarathon) != null;
         } catch (Exception e) {
             throw new UserServiceException(e.getMessage(), e);

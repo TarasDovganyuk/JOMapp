@@ -7,8 +7,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -19,17 +20,17 @@ public class Task {
     private Long id;
 
     @CreationTimestamp
-    private LocalDate created;
+    private LocalDateTime created;
 
     @NotNull
     private String title;
 
     @UpdateTimestamp
-    private LocalDate updated;
+    private LocalDateTime updated;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "task", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Progress> progress;
+    @OneToMany(mappedBy = "task")
+    private Set<Progress> progress = new HashSet<>(0);
 
     @ToString.Exclude
     @ManyToOne

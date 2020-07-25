@@ -1,6 +1,5 @@
 package com.softserve.edu.jom.service;
 
-import com.softserve.edu.jom.exception.MarathonServiceException;
 import com.softserve.edu.jom.exception.SprintServiceException;
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.model.Sprint;

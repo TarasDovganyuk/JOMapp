@@ -5,7 +5,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -23,9 +24,9 @@ public class Marathon {
     @JoinTable(name = "marathon_user",
             joinColumns = @JoinColumn(name = "marathon_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> users;
+    private Set<User> users = new HashSet<>(0);
 
     @ToString.Exclude
-    @OneToMany(mappedBy="marathon")
-    private List<Sprint> sprints;
+    @OneToMany(mappedBy = "marathon")
+    private Set<Sprint> sprints = new HashSet<>(0);
 }

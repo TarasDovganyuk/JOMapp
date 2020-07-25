@@ -1,14 +1,12 @@
 package com.softserve.edu.jom.model;
 
 import lombok.Data;
-import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -23,21 +21,19 @@ public class Progress {
     private Long id;
 
     @CreationTimestamp
-    private LocalDate started;
+    private LocalDateTime started;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
     @UpdateTimestamp
-    private LocalDate updated;
+    private LocalDateTime updated;
 
-    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "task_id", referencedColumnName = "id")
     private Task task;
 
-    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "trainee_id", referencedColumnName = "id")
     private User user;
