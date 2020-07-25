@@ -29,7 +29,7 @@ public class User {
             "Last name must be between 2 and 20 characters")
     private String lastName;
 
-//    @Column(unique = true)
+    @Column(unique = true)
     @NotNull
     @Pattern(regexp = ".+@.\\..+", message = "Please provide a valid email address")
     private String email;

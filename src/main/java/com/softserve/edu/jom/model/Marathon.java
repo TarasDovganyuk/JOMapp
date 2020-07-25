@@ -18,7 +18,7 @@ public class Marathon {
     @NotNull
     private String title;
 
-//    @ToString.Exclude
+    @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "marathon_user",
             joinColumns = @JoinColumn(name = "marathon_id"),
