@@ -41,7 +41,7 @@ public class User {
     @NotNull
     private String password;
 
-//    @ToString.Exclude
+    @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "marathon_user",
             joinColumns = @JoinColumn(name = "user_id"),

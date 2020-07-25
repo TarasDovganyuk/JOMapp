@@ -29,6 +29,9 @@ public class JomApplication implements CommandLineRunner {
             user.setLastName("MentorSurname" + i);
             user.setEmail("mentoruser" + i + "@gmail.com");
             userService.createOrUpdateUser(user);
+
+            User user1 = userService.getUserById(1L);
+            System.out.println(user1);
         }
     }
 }

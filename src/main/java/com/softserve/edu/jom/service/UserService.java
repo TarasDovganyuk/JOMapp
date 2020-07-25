@@ -4,4 +4,5 @@ import com.softserve.edu.jom.model.User;
 
 public interface UserService {
     User createOrUpdateUser(User user);
+    User getUserById(Long id);
 }

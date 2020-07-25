@@ -19,7 +19,7 @@ public class Marathon {
     private String title;
 
 //    @ToString.Exclude
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "marathon_user",
             joinColumns = @JoinColumn(name = "marathon_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
