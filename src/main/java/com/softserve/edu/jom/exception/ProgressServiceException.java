@@ -1,6 +1,6 @@
 package com.softserve.edu.jom.exception;
 
-public class ProgressServiceException extends Exception {
+public class ProgressServiceException extends RuntimeException {
 
     public ProgressServiceException() {
     }

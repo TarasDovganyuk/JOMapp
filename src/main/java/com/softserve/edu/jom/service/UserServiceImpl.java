@@ -1,8 +1,11 @@
 package com.softserve.edu.jom.service;
 
+import com.softserve.edu.jom.exception.UserServiceException;
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.model.User;
+import com.softserve.edu.jom.repository.MarathonRepository;
 import com.softserve.edu.jom.repository.UserRepository;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,20 +16,17 @@ import java.util.List;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
-    final private UserRepository userRepository;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
+    private MarathonRepository marathonRepository;
 
     @Override
     public List<User> getAll() {
-        return null;
+        return userRepository.findAll();
     }
 
     @Override
     public User getUserById(Long id) {
+        Validate.notNull(id, "User id must not be null!");
         return userRepository.getUserById(id);
     }
 
@@ -36,12 +36,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllByRole(String role) {
-        return userRepository.getAllByRole(User.Role.valueOf(role));
+    public List<User> getAllByRole(String role) throws UserServiceException {
+        try {
+            return userRepository.getAllByRole(User.Role.valueOf(role.toUpperCase()));
+        } catch (Exception e) {
+            throw new UserServiceException(e.getMessage(), e);
+        }
     }
 
     @Override
     public boolean addUserToMarathon(User user, Marathon marathon) {
-        return marathon.getUsers().add(user);
+        try {
+            Marathon existedMarathon = marathonRepository.getOne(marathon.getId());
+            Validate.notNull(existedMarathon, "Marathon with id = %s is not found!", marathon.getId());
+            User newUser = new User();
+            newUser.setLastName(user.getLastName());
+            newUser.setFirstName(user.getFirstName());
+            newUser.setEmail(user.getEmail());
+            newUser.setRole(user.getRole());
+            newUser.setPassword(user.getPassword());
+            existedMarathon.getUsers().add(newUser);
+            return marathonRepository.save(existedMarathon) != null;
+        } catch (Exception e) {
+            throw new UserServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setMarathonRepository(MarathonRepository marathonRepository) {
+        this.marathonRepository = marathonRepository;
     }
 }

@@ -24,11 +24,12 @@ public class ProgressServiceImpl implements ProgressService {
 
     @Override
     public Progress getProgressById(Long progressId) {
+        Validate.notNull(progressId, "Progress id must not be null!");
         return progressRepository.getOne(progressId);
     }
 
     @Override
-    public Progress addTaskForStudent(Task task, User user) throws ProgressServiceException {
+    public Progress addTaskForStudent(Task task, User user) {
         try {
             User existedUser = userRepository.getOne(user.getId());
             Validate.notNull(existedUser, "User with id = %s doesn't exist!", user.getId());
@@ -50,20 +51,24 @@ public class ProgressServiceImpl implements ProgressService {
         }
     }
 
+    @Override
     public Progress addOrUpdateProgress(Progress progress) {
         return progressRepository.save(progress);
+
     }
 
+    @Override
     public boolean setStatus(Progress.TaskStatus taskStatus, Progress progress) {
         progress.setStatus(taskStatus);
-        progressRepository.save(progress);
-        return true;
+        return progressRepository.save(progress) != null;
     }
 
+    @Override
     public List<Progress> allProgressByUserIdAndMarathonId(Long userId, Long marathonId) {
         return progressRepository.findByUserIdAndMarathonId(userId, marathonId);
     }
 
+    @Override
     public List<Progress> allProgressByUserIdAndSprintId(Long userId, Long sprintId) {
         return progressRepository.findByUserIdAndSprintId(userId, sprintId);
     }
