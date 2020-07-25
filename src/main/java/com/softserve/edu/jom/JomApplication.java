@@ -18,6 +18,15 @@ public class JomApplication implements CommandLineRunner {
     private TaskService taskService;
     private ProgressService progressService;
 
+    @Autowired
+    public JomApplication(UserService userService, MarathonService marathonService,
+                          SprintService sprintService, TaskService taskService, ProgressService progressService) {
+        this.userService = userService;
+        this.marathonService = marathonService;
+        this.sprintService = sprintService;
+        this.taskService = taskService;
+        this.progressService = progressService;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(JomApplication.class, args);
@@ -155,31 +164,7 @@ public class JomApplication implements CommandLineRunner {
     }
 
     private void getAllProgressByUserIdSprintId() {
-        System.out.println(progressService.allProgressByUserIdAndSprintId(12L, 1L));
+        System.out.println(progressService.allProgressByUserIdAndSprintId(12L, 2L));
     }
 
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Autowired
-    public void setMarathonService(MarathonService marathonService) {
-        this.marathonService = marathonService;
-    }
-
-    @Autowired
-    public void setSprintService(SprintService sprintService) {
-        this.sprintService = sprintService;
-    }
-
-    @Autowired
-    public void setTaskService(TaskService taskService) {
-        this.taskService = taskService;
-    }
-
-    @Autowired
-    public void setProgressService(ProgressService progressService) {
-        this.progressService = progressService;
-    }
 }
