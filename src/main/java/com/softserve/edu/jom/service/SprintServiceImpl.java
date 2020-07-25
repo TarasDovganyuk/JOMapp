@@ -4,9 +4,13 @@ import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.model.Sprint;
 import com.softserve.edu.jom.repository.SprintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Service
+@Transactional
 public class SprintServiceImpl implements SprintService {
 
     private SprintRepository sprintRepository;
@@ -33,6 +37,7 @@ public class SprintServiceImpl implements SprintService {
 
     @Override
     public boolean updateSprint(Sprint sprint) {
+
         return false; //TODO
     }
 }
