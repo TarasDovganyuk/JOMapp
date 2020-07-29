@@ -7,10 +7,10 @@
 </head>
 <body>
 <h1 th:if="!${marathonId}" th:utext="${mode} + ' student'"></h1>
-<h1 th:if="${marathonId}" th:utext="${mode} +' student to marathon with id:' + ${marathonId}"></h1>
+<h1 th:if="${marathonId}" th:utext="${mode} +' student to marathon with id ' + ${marathonId}"></h1>
 <form th:object="${user}" method="POST">
     <table>
-        <tr th:if="${mode} == 'edit'">
+        <tr th:if="${mode} == 'Edit'">
             <td>
                 <label for="id">Id: </label>
             </td>
@@ -42,7 +42,7 @@
                 <input type="email" th:field="*{email}" id="email">
             </td>
         </tr>
-        <tr>
+        <tr th:if="${mode} == 'Add'">
             <td>
                 <label for="password">Password: </label>
             </td>

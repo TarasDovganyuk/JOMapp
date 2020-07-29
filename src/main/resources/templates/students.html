@@ -6,9 +6,9 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<h2>This is students page</h2>
-<a th:if="${marathonId}" th:href="@{/students/{marathon_id}/add(marathon_id=${marathonId})}">Add Student</a>
-<a th:if="!${marathonId}" href="/addStudent">Add Student</a>
+<h2 th:if="${marathonId}" th:text="'This is students page for marathon with id ' + ${marathonId}"/>
+<h2 th:if="!${marathonId}">This is students page</h2>
+<a th:href="@{/}">Home page</a>
 <br/><br/>
 <div>
     <table border="1">
@@ -35,6 +35,9 @@
                 Remove from marathon</a></td>
         </tr>
     </table>
+    <br><br>
+    <a th:if="${marathonId}" th:href="@{/students/{marathon_id}/add(marathon_id=${marathonId})}">Add Student</a>
+    <a th:if="!${marathonId}" href="/addStudent">Add Student</a>
 </div>
 </body>
 </html>
