@@ -10,6 +10,7 @@
 <h1 th:if="!${marathonId}">This is students page</h1>
 <a th:href="@{/}">Home page</a>
 <a th:if="${marathonId}" th:href="@{/students/{marathon_id}/add(marathon_id=${marathonId})}"> | Add Student</a>
+<a th:if="!${marathonId}" href="/addStudent"> | Add Student</a>
 <br/><br/>
 <div>
     <table border="1">

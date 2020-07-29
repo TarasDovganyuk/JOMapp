@@ -30,14 +30,10 @@ public class StudentController {
 
     @PostMapping("/addStudent")
     public String addStudent(Model model, @ModelAttribute(name = "student") User user) {
-        try {
-            user.setRole(User.Role.TRAINEE);
-            userService.createOrUpdateUser(user);
-            return "redirect:/students";
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "changeStudent";
-        }
+        user.setRole(User.Role.TRAINEE);
+        userService.createOrUpdateUser(user);
+        return "redirect:/students";
+
     }
 
     @GetMapping("/addStudent")
