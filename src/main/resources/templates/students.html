@@ -1,14 +1,15 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8"/>
     <title>Student List</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<h2 th:if="${marathonId}" th:text="'This is students page for marathon with id ' + ${marathonId}"/>
-<h2 th:if="!${marathonId}">This is students page</h2>
+<h1 th:if="${marathonId}" th:text="'This is students page for marathon with id ' + ${marathonId}"></h1>
+<h1 th:if="!${marathonId}">This is students page</h1>
 <a th:href="@{/}">Home page</a>
+<a th:if="${marathonId}" th:href="@{/students/{marathon_id}/add(marathon_id=${marathonId})}"> | Add Student</a>
 <br/><br/>
 <div>
     <table border="1">
@@ -36,8 +37,7 @@
         </tr>
     </table>
     <br><br>
-    <a th:if="${marathonId}" th:href="@{/students/{marathon_id}/add(marathon_id=${marathonId})}">Add Student</a>
-    <a th:if="!${marathonId}" href="/addStudent">Add Student</a>
+
 </div>
 </body>
 </html>
