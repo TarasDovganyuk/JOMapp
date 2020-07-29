@@ -25,7 +25,7 @@ public class StudentController {
     @GetMapping("/students")
     public String getUsers(Model model) {
         model.addAttribute("students", userService.getAllByRole("Trainee"));
-        return "studentList";
+        return "students";
     }
 
     @PostMapping("/addStudent")
@@ -53,7 +53,7 @@ public class StudentController {
         List<User> userList = userService.getAllByRoleAndMarathonId(User.Role.TRAINEE.name(), marathon_id);
         model.addAttribute("students", userList);
         model.addAttribute("marathonId", marathon_id);
-        return "studentList";
+        return "students";
     }
 
     @GetMapping("/students/{marathon_id}/delete/{student_id}")

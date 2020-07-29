@@ -58,6 +58,6 @@ public class MarathonController {
     public String getAllUsers(Model model, @PathVariable(name="marathonId") Long id) {
         Set<User> users = marathonService.getMarathonById(id).getUsers();
         model.addAttribute("users", users);
-        return "studentList";
+        return "students";
     }
 }

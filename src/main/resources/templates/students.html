@@ -17,7 +17,7 @@
             <th>Last Name</th>
             <th>Email</th>
             <th>Password</th>
-            <th>Remove action</th>
+            <th th:if="${marathonId}">Remove action</th>
         </tr>
         <tr th:each="student : ${students}">
             <td th:utext="${student.id}">...</td>
