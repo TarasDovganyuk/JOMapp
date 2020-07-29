@@ -1,7 +1,6 @@
 package com.softserve.edu.jom.controller;
 
 import com.softserve.edu.jom.model.Marathon;
-import com.softserve.edu.jom.model.User;
 import com.softserve.edu.jom.service.MarathonService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @Data
@@ -66,12 +64,5 @@ public class MarathonController {
     public String addMarathon(@ModelAttribute(name = "marathon") Marathon marathon) {
         marathonService.createOrUpdate(marathon);
         return "redirect:/marathons";
-    }
-
-    @GetMapping("/users/{marathonId}")
-    public String getAllUsers(Model model, @PathVariable(name = "marathonId") Long id) {
-        Set<User> users = marathonService.getMarathonById(id).getUsers();
-        model.addAttribute("users", users);
-        return "students";
     }
 }
