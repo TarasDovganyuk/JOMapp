@@ -36,7 +36,7 @@ public class StudentController {
             return "redirect:/students";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "addStudent";
+            return "changeStudent";
         }
     }
 
@@ -45,13 +45,14 @@ public class StudentController {
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("mode", "add");
-        return "addStudent";
+        return "changeStudent";
     }
 
     @GetMapping("/students/{marathon_id}")
     public String getStudentsByMarathonId(@PathVariable(name = "marathon_id") Long marathon_id, Model model) {
         List<User> userList = userService.getAllByRoleAndMarathonId(User.Role.TRAINEE.name(), marathon_id);
         model.addAttribute("students", userList);
+        model.addAttribute("marathonId", marathon_id);
         return "studentList";
     }
 
@@ -72,7 +73,7 @@ public class StudentController {
     public String addStudentToMarathon(Model model, @PathVariable(name = "marathon_id") Long marathon_id) {
         User user = new User();
         model.addAttribute("user", user);
-        return "addStudent";
+        return "changeStudent";
     }
 
     @GetMapping("/students/{marathon_id}/edit/{student_id}")
@@ -80,7 +81,7 @@ public class StudentController {
         User user = userService.getUserById(student_id);
         model.addAttribute("user", user);
         model.addAttribute("mode", "edit");
-        return "addStudent";
+        return "changeStudent";
     }
 
     @PostMapping("/students/{marathon_id}/edit/{student_id}")

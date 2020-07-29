@@ -17,6 +17,7 @@
             <th>Last Name</th>
             <th>Email</th>
             <th>Password</th>
+            <th>Remove action</th>
         </tr>
         <tr th:each="student : ${students}">
             <td th:utext="${student.id}">...</td>
@@ -24,6 +25,8 @@
             <td th:utext="${student.lastName}">...</td>
             <td th:utext="${student.email}">...</td>
             <td th:utext="${student.password}">...</td>
+            <td th:if="${marathonId}"><a th:href="@{'/students/'+ ${marathonId} + '/delete/' + ${student.id}}">
+                Remove from marathon</a></td>
         </tr>
     </table>
 </div>
