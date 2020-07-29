@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -37,13 +38,19 @@ public class MarathonServiceImpl implements MarathonService {
     }
 
     @Override
-    public Marathon createOrUpdate(Marathon marathon) {
-        try {
-            Validate.notNull(marathon.getTitle(), "Title must be not null");
-            return marathonRepository.save(marathon);
-        } catch (Exception e) {
-            throw new MarathonServiceException(e.getMessage(), e);
+    public Marathon createOrUpdate(Marathon marathon)  {
+        if (marathon.getId() != null) {
+
+            Optional<Marathon> marathonOptional = marathonRepository.findById(marathon.getId());
+
+            if (marathonOptional.isPresent()) {
+                Marathon newMarathon = marathonOptional.get();
+                newMarathon.setTitle(marathon.getTitle());
+                return marathonRepository.save(newMarathon);
+            }
         }
+
+        return marathonRepository.save(marathon);
     }
 
 }

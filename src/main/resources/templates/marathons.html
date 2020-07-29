@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Marathons page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<h2>This is marathons page</h2>
+<div>
+    <table border="1">
+        <tr>
+            <th>Marathons</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="marathon: ${marathons}">
+            <td>
+                <a th:text="${marathon.title}" th:href="@{students/{id}(id=${marathon.id})}"></a>
+            </td>
+            <td>
+                <a th:href="@{delete/{id}(id=${marathon.id})}"> Delete </a>
+            </td>
+        </tr>
+    </table>
+
+    <br><br>
+    <a th:href="@{addMarathon/}"> AddMarathon </a>
+</div>
+</body>
+</html>
