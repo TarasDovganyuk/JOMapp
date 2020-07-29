@@ -2,18 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <div th:switch="${mode}">
-        <title th:case="'add'">Add Student</title>
-        <title th:case="'edit'">Edit Student</title>
-    </div>
+    <title th:utext="${mode}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<div th:switch="${mode}">
-    <h1 th:case="'add'"> Create a Student:</h1>
-    <h1 th:case="'edit'">Create a Student:</h1>
-</div>
-
+<h1 th:if="!${marathonId}" th:utext="${mode} + ' student'"></h1>
+<h1 th:if="${marathonId}" th:utext="${mode} +' student to marathon with id:' + ${marathonId}"></h1>
 <form th:object="${user}" method="POST">
     <table>
         <tr th:if="${mode} == 'edit'">
@@ -58,7 +52,7 @@
         </tr>
         <tr>
             <td>
-                <input type="submit" th:value="${mode} == 'add'? 'Create' : 'Update'">
+                <input type="submit" th:value="${mode} == 'Add'? 'Create' : 'Update'">
             </td>
             <td>
                 <input type="reset" value="Clear">

@@ -44,7 +44,7 @@ public class StudentController {
     public String showAddStudentPage(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        model.addAttribute("mode", "add");
+        model.addAttribute("mode", "Add");
         return "changeStudent";
     }
 
@@ -74,6 +74,7 @@ public class StudentController {
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("marathonId", marathon_id);
+        model.addAttribute("mode", "Add");
         return "changeStudent";
     }
 
@@ -81,7 +82,8 @@ public class StudentController {
     public String showEditStudentPage(Model model, @PathVariable(name = "marathon_id") Long marathon_id, @PathVariable(name = "student_id") Long student_id) {
         User user = userService.getUserById(student_id);
         model.addAttribute("user", user);
-        model.addAttribute("mode", "edit");
+        model.addAttribute("mode", "Edit");
+        model.addAttribute("marathonId", marathon_id);
         return "changeStudent";
     }
 
@@ -90,6 +92,6 @@ public class StudentController {
         user.setId(student_id);
         user.setRole(User.Role.TRAINEE);
         userService.createOrUpdateUser(user);
-        return "redirect:/students";
+        return "redirect:/students/" + marathon_id;
     }
 }

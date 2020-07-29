@@ -6,8 +6,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<h1>Student List</h1>
-<a th:if="${marathonId}" th:href="@{'/students/'+ ${marathonId} + '/add'}">Add Student</a>
+<h2>This is students page</h2>
+<a th:if="${marathonId}" th:href="@{/students/{marathon_id}/add(marathon_id=${marathonId})}">Add Student</a>
 <a th:if="!${marathonId}" href="/addStudent">Add Student</a>
 <br/><br/>
 <div>
@@ -22,11 +22,16 @@
         </tr>
         <tr th:each="student : ${students}">
             <td th:utext="${student.id}">...</td>
-            <td th:utext="${student.firstName}">...</td>
+            <td th:if="${marathonId}">
+                <a th:text="${student.firstName}"
+                   th:href="@{/students/{marathon_id}/edit/{student_id}(marathon_id=${marathonId},student_id=${student.id})}"></a>
+            </td>
+            <td th:if="!${marathonId}" th:utext="${student.firstName}">...</td>
             <td th:utext="${student.lastName}">...</td>
             <td th:utext="${student.email}">...</td>
             <td th:utext="${student.password}">...</td>
-            <td th:if="${marathonId}"><a th:href="@{'/students/'+ ${marathonId} + '/delete/' + ${student.id}}">
+            <td th:if="${marathonId}"><a
+                    th:href="@{/students/{marathon_id}/delete/{student_id}(marathon_id=${marathonId},student_id=${student.id})}">
                 Remove from marathon</a></td>
         </tr>
     </table>
