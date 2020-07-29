@@ -39,6 +39,21 @@ public class MarathonController {
         return "redirect:/marathons";
     }
 
+    @GetMapping("/edit/{marathonId}")
+    public String editMarathon(Model model, @PathVariable(name="marathonId") Long id) {
+       Marathon marathon = marathonService.getMarathonById(id);
+       model.addAttribute("marathon", marathon);
+        return "editMarathon";
+    }
+
+    @PostMapping("/edit/{marathonId}")
+    public String editMarathon(Model model, @PathVariable(name="marathonId") Long id,
+                               @ModelAttribute(name = "marathon") Marathon marathon) {
+        marathon.setId(id);
+        marathonService.createOrUpdate(marathon);
+        return "redirect:/marathons";
+    };
+
 
     @GetMapping("/addMarathon")
     public String addMarathon(Model model) {

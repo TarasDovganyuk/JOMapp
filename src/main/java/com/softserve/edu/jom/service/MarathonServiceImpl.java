@@ -39,15 +39,19 @@ public class MarathonServiceImpl implements MarathonService {
 
     @Override
     public Marathon createOrUpdate(Marathon marathon)  {
+        System.out.println(marathon);
         if (marathon.getId() != null) {
 
-            Optional<Marathon> marathonOptional = marathonRepository.findById(marathon.getId());
-
-            if (marathonOptional.isPresent()) {
-                Marathon newMarathon = marathonOptional.get();
-                newMarathon.setTitle(marathon.getTitle());
-                return marathonRepository.save(newMarathon);
-            }
+            Marathon existedMarathon = getMarathonById(marathon.getId());
+            existedMarathon.setTitle(marathon.getTitle());
+            return marathonRepository.save(existedMarathon);
+//            Optional<Marathon> marathonOptional = marathonRepository.findById(marathon.getId());
+//
+//            if (marathonOptional.isPresent()) {
+//                Marathon newMarathon = marathonOptional.get();
+//                newMarathon.setTitle(marathon.getTitle());
+//                return marathonRepository.save(newMarathon);
+//            }
         }
 
         return marathonRepository.save(marathon);
