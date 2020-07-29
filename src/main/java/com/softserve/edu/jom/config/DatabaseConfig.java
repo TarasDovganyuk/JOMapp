@@ -1,4 +1,4 @@
-package com.softserve.edu.jom;
+package com.softserve.edu.jom.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;

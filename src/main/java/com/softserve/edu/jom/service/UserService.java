@@ -15,5 +15,9 @@ public interface UserService {
 
     List<User> getAllByRole(String role) throws UserServiceException;
 
-    boolean addUserToMarathon(User user, Marathon marathon);
+    List<User> getAllByRoleAndMarathonId(String role, Long marathonId) throws UserServiceException;
+
+    boolean addUserToMarathon(User user,  Long marathonId);
+
+    boolean removeUserFromMarathon(Long userId, Long marathonId);
 }

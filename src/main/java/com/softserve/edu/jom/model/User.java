@@ -1,6 +1,7 @@
 package com.softserve.edu.jom.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "users")
+@EqualsAndHashCode(exclude="marathons")
 public class User {
     public enum Role {
         MENTOR, TRAINEE
@@ -43,7 +45,7 @@ public class User {
     private String password;
 
     @ToString.Exclude
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "marathon_user",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "marathon_id"))

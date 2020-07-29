@@ -48,6 +48,7 @@ public class JomApplication implements CommandLineRunner {
         addUserToMarathon();
         getAllProgressByUserIdMarathonId();
         getAllProgressByUserIdSprintId();
+        removeUserFromMarathon();
     }
 
     private void addMentors() {
@@ -99,12 +100,12 @@ public class JomApplication implements CommandLineRunner {
     }
 
     private void addUserToMarathon() {
-        userService.addUserToMarathon(userService.getUserById(11L), marathonService.getMarathonById(1L));
-        userService.addUserToMarathon(userService.getUserById(12L), marathonService.getMarathonById(1L));
-        userService.addUserToMarathon(userService.getUserById(13L), marathonService.getMarathonById(1L));
-        userService.addUserToMarathon(userService.getUserById(11L), marathonService.getMarathonById(3L));
-        userService.addUserToMarathon(userService.getUserById(12L), marathonService.getMarathonById(3L));
-        userService.addUserToMarathon(userService.getUserById(13L), marathonService.getMarathonById(3L));
+        userService.addUserToMarathon(userService.getUserById(11L), 1L);
+        userService.addUserToMarathon(userService.getUserById(12L), 1L);
+        userService.addUserToMarathon(userService.getUserById(13L), 1L);
+        userService.addUserToMarathon(userService.getUserById(11L), 3L);
+        userService.addUserToMarathon(userService.getUserById(12L), 3L);
+        userService.addUserToMarathon(userService.getUserById(13L), 3L);
     }
 
     private void getAllStudents() {
@@ -165,6 +166,10 @@ public class JomApplication implements CommandLineRunner {
 
     private void getAllProgressByUserIdSprintId() {
         System.out.println(progressService.allProgressByUserIdAndSprintId(12L, 2L));
+    }
+
+    private void removeUserFromMarathon() {
+        System.out.println(userService.removeUserFromMarathon(11L, 1L));
     }
 
 }

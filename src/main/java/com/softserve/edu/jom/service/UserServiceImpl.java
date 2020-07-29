@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -45,17 +47,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean addUserToMarathon(User user, Marathon marathon) {
+    public List<User> getAllByRoleAndMarathonId(String role, Long marathonId) throws UserServiceException {
         try {
-            Marathon existedMarathon = marathonRepository.getOne(marathon.getId());
-            Validate.notNull(existedMarathon, "Marathon with id = %s is not found!", marathon.getId());
-            User existedUser = userRepository.getOne(user.getId());
-            Validate.notNull(existedUser, "User with id = %s is not found!", user.getId());
+            return userRepository.findByRoleAndMarathonId(User.Role.valueOf(role.toUpperCase()), marathonId);
+        } catch (Exception e) {
+            throw new UserServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public boolean addUserToMarathon(User user, Long marathonId) {
+        try {
+            Marathon existedMarathon = marathonRepository.getOne(marathonId);
+            Validate.notNull(existedMarathon, "Marathon with id = %s is not found!", marathonId);
             existedMarathon.getUsers().add(user);
             return marathonRepository.save(existedMarathon) != null;
         } catch (Exception e) {
             throw new UserServiceException(e.getMessage(), e);
         }
+    }
+
+    @Override
+    public boolean removeUserFromMarathon(Long userId, Long marathonId) {
+        try {
+            User user = getUserById(marathonId);
+            Validate.notNull(user, "User with id = %s is not found!", userId);
+            Marathon marathon = marathonRepository.getOne(marathonId);
+            Validate.notNull(marathon, "Marathon with id = %s is not found!", marathonId);
+            Set<User> newUserLinkedSet = marathon.getUsers().stream().filter(u -> u.getId() != userId).collect(Collectors.toSet());
+            marathon.getUsers().clear();
+            marathon.getUsers().addAll(newUserLinkedSet);
+            marathonRepository.save(marathon);
+        } catch (Exception e) {
+            throw new UserServiceException(e.getMessage(), e);
+        }
+        return true;
     }
 
     @Autowired
