@@ -7,7 +7,8 @@
 </head>
 <body>
 <h1>Student List</h1>
-<a href="/addStudent">Add Student</a>
+<a th:if="${marathonId}" th:href="@{'/students/'+ ${marathonId} + '/add'}">Add Student</a>
+<a th:if="!${marathonId}" href="/addStudent">Add Student</a>
 <br/><br/>
 <div>
     <table border="1">

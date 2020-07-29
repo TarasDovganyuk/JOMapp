@@ -73,6 +73,7 @@ public class StudentController {
     public String addStudentToMarathon(Model model, @PathVariable(name = "marathon_id") Long marathon_id) {
         User user = new User();
         model.addAttribute("user", user);
+        model.addAttribute("marathonId", marathon_id);
         return "changeStudent";
     }
 
