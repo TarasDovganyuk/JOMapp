@@ -34,21 +34,21 @@ public class JomApplication implements CommandLineRunner {
 
     @Transactional
     public void run(String... arg) throws Exception {
-        addMentors();
-        addStudents();
-        getAllStudents();
-        addUpdateDeleteMarathons();
-        addSprintsToMarathon(1L);
-        addSprintsToMarathon(3L);
-        addTasksToSprint(1L);
-        addTasksToSprint(2L);
-        addTasksForStudent();
-        updateProgress();
-        setStatusToProgress();
-        addUserToMarathon();
-        getAllProgressByUserIdMarathonId();
-        getAllProgressByUserIdSprintId();
-        removeUserFromMarathon();
+//        addMentors();
+//        addStudents();
+//        getAllStudents();
+//        addUpdateDeleteMarathons();
+//        addSprintsToMarathon(1L);
+//        addSprintsToMarathon(3L);
+//        addTasksToSprint(1L);
+//        addTasksToSprint(2L);
+//        addTasksForStudent();
+//        updateProgress();
+//        setStatusToProgress();
+//        addUserToMarathon();
+//        getAllProgressByUserIdMarathonId();
+//        getAllProgressByUserIdSprintId();
+//        removeUserFromMarathon();
     }
 
     private void addMentors() {

@@ -15,7 +15,7 @@ public class MarathonServiceImpl implements MarathonService {
     private MarathonRepository marathonRepository;
 
     @Autowired
-    public MarathonServiceImpl(MarathonRepository marathonRepository) {
+    public void setMarathonServiceImpl(MarathonRepository marathonRepository) {
         this.marathonRepository = marathonRepository;
     }
 
