@@ -59,12 +59,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllByRoleAndMarathonId(String role, Long marathonId) throws UserServiceException {
-        try {
-            return userRepository.findByRoleAndMarathonId(User.Role.valueOf(role.toUpperCase()), marathonId);
-        } catch (Exception e) {
-            throw new UserServiceException(e.getMessage(), e);
-        }
+    public List<User> getAllByRoleAndMarathonId(String role, Long marathonId) {
+        return userRepository.findByRoleAndMarathonId(User.Role.valueOf(role.toUpperCase()), marathonId);
     }
 
     @Override
@@ -82,7 +78,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean removeUserFromMarathon(Long userId, Long marathonId) {
         try {
-            User user = getUserById(marathonId);
+            User user = getUserById(userId);
             Validate.notNull(user, "User with id = %s is not found!", userId);
             Marathon marathon = marathonRepository.getOne(marathonId);
             Validate.notNull(marathon, "Marathon with id = %s is not found!", marathonId);
