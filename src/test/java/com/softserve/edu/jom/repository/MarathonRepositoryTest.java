@@ -15,10 +15,6 @@ public class MarathonRepositoryTest {
     @Autowired
     private MarathonRepository marathonRepository;
 
-    @Autowired
-    private TestEntityManager entityManager;
-
-
     @Test
     public void getMarathonByIdTest() {
         Marathon actual = marathonRepository.getMarathonById(1L);
