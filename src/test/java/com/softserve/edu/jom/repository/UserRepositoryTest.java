@@ -12,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.validation.ConstraintViolationException;
-
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,11 +20,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @ContextConfiguration(classes = JomApplication.class)
 public class UserRepositoryTest {
-    @Autowired
     TestEntityManager entityManager;
 
-    @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    public UserRepositoryTest(TestEntityManager entityManager, UserRepository userRepository) {
+        this.entityManager = entityManager;
+        this.userRepository = userRepository;
+    }
 
     @Test
     public void testGetUserById() {
@@ -35,7 +38,7 @@ public class UserRepositoryTest {
         assertEquals("Alex", foundUser.getFirstName());
         assertEquals("Smith", foundUser.getLastName());
         assertEquals("alex@gmail.com", foundUser.getEmail());
-        assertEquals("qweee", foundUser.getPassword());
+        assertEquals("qweee1", foundUser.getPassword());
         assertEquals(User.Role.TRAINEE, foundUser.getRole());
     }
 
@@ -98,7 +101,7 @@ public class UserRepositoryTest {
         user.setEmail("new@gmail.com");
         user.setLastName("w");
         assertThrows(ConstraintViolationException.class, () -> {
-            userRepository.saveAndFlush(user);
+            userRepository.save(user);
         });
     }
 

@@ -34,7 +34,7 @@ public class User {
 
     @Column(unique = true)
     @NotNull
-    @Pattern(regexp = ".+@.\\..+", message = "Please provide a valid email address")
+    @Pattern(regexp = "^(.+)@(.+)$", message = "Please provide a valid email address")
     private String email;
 
     @NotNull
