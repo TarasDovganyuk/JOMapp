@@ -53,7 +53,7 @@ public class StudentController {
     }
 
     @GetMapping("/students/{marathon_id}/delete/{student_id}")
-    public String getStudentsByMarathonId(@PathVariable(name = "marathon_id") Long marathon_id, @PathVariable(name = "student_id") Long student_id) {
+    public String deleteStudentFromMarathon(@PathVariable(name = "marathon_id") Long marathon_id, @PathVariable(name = "student_id") Long student_id) {
         userService.removeUserFromMarathon(student_id, marathon_id);
         return "redirect:/students/" + marathon_id;
     }
