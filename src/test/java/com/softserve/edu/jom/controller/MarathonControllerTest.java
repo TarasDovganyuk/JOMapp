@@ -1,4 +1,4 @@
-package com.softserve.edu.jom.repository;
+package com.softserve.edu.jom.controller;
 
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.service.MarathonService;
@@ -14,13 +14,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
 @Transactional
-public class MarathonTest {
+public class MarathonControllerTest {
     private MockMvc mockMvc;
     private MarathonService marathonService;
 
@@ -49,13 +48,5 @@ public class MarathonTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/addMarathon")
         .param("title", "newMarathon"))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection());
-    }
-
-    @Test
-    public void updateMarathon() {
-        Marathon actual = marathonService.getMarathonById(2L);
-        actual.setTitle("JavaScript Online Marathon Updated");
-        marathonService.createOrUpdate(actual);
-        assertEquals(marathonService.getMarathonById(2L).getTitle(), actual.getTitle());
     }
 }

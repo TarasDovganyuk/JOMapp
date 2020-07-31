@@ -21,5 +21,4 @@ public class MarathonRepositoryTest {
         assertEquals("Java Online Marathon", actual.getTitle());
     }
 
-
 }

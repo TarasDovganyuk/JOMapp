@@ -1,35 +1,23 @@
-package com.softserve.edu.jom.repository;
+package com.softserve.edu.jom.service;
 
 import com.softserve.edu.jom.model.Sprint;
-import com.softserve.edu.jom.service.SprintService;
+import com.softserve.edu.jom.repository.MarathonRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@AutoConfigureMockMvc
 @AutoConfigureTestDatabase
 @Transactional
-public class SprintTest {
-    private MockMvc mockMvc;
+public class SprintServiceTest {
     private SprintService sprintService;
     private MarathonRepository marathonRepository;
-
-    @Autowired
-    public void setMockMvc(MockMvc mockMvc) {
-        this.mockMvc = mockMvc;
-    }
 
     @Autowired
     public void setSprintService(SprintService sprintService) {
@@ -40,17 +28,6 @@ public class SprintTest {
     public void setMarathonRepository(MarathonRepository marathonRepository) {
         this.marathonRepository = marathonRepository;
     }
-
-
-//    @Test
-//    public void getSprintsByMarathonIdTest() throws Exception {
-//        List<Sprint> expected = sprintService.getSprintsByMarathonId(1L);
-//
-//        mockMvc.perform(MockMvcRequestBuilders.get("/sprints"))
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(MockMvcResultMatchers.model().attributeExists("sprints"))
-//                .andExpect(MockMvcResultMatchers.model().attribute("sprints", expected));
-//    }
 
     @Test
     public void addSprintToMarathonTest() {
