@@ -13,9 +13,12 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @EqualsAndHashCode(exclude = {"task", "user"})
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"task_id", "trainee_id"})
+})
 public class Progress {
 
-    public enum TaskStatus{
+    public enum TaskStatus {
         PASS, FAIL, PENDING
     }
 
@@ -35,11 +38,13 @@ public class Progress {
 
     @ToString.Exclude
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "task_id", referencedColumnName = "id")
     private Task task;
 
     @ToString.Exclude
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "trainee_id", referencedColumnName = "id")
     private User user;
 }

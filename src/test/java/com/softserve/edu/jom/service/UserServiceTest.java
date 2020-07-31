@@ -7,6 +7,8 @@ import com.softserve.edu.jom.repository.MarathonRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
@@ -19,9 +21,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureTestDatabase
 @Transactional
+@AutoConfigureTestEntityManager
 public class UserServiceTest {
     private UserService userService;
-    private MarathonRepository marathonRepository;
+    private TestEntityManager entityManager;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -29,8 +32,8 @@ public class UserServiceTest {
     }
 
     @Autowired
-    public void setMarathonRepository(MarathonRepository marathonRepository) {
-        this.marathonRepository = marathonRepository;
+    public void setEntityManager(TestEntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     @Test
@@ -67,6 +70,7 @@ public class UserServiceTest {
         String newName = "Vladlen";
         Long userId = 1L;
         User user = userService.getUserById(userId);
+        assertNotEquals(newName, user.getFirstName());
         user.setFirstName(newName);
         userService.createOrUpdateUser(user);
         User savedUser = userService.getUserById(userId);
@@ -125,7 +129,7 @@ public class UserServiceTest {
         Long marathonId = 1L;
         boolean isAdded = userService.addUserToMarathon(user, marathonId);
         assertTrue(isAdded);
-        Marathon marathon = marathonRepository.getMarathonById(marathonId);
+        Marathon marathon = entityManager.find(Marathon.class, marathonId);
         Set<User> userList = marathon.getUsers();
         assertTrue(userList != null && userList.size() >= 1);
         User savedUser = userList.stream().filter(i -> "alex.smith@gmail.com" .equals(i.getEmail())).collect(Collectors.toList()).get(0);
