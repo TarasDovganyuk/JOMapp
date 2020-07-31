@@ -21,37 +21,37 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class JomApplicationTests {
-    @TestConfiguration
-    static class MarathonServiceTestConfiguration {
-        @Bean
-        public MarathonServiceImpl marathonService() {
-            return new MarathonServiceImpl();
-        }
-    }
-
-    private MarathonService marathonService;
-
-    @Autowired
-    public void setMarathonService(MarathonService marathonService) {
-        this.marathonService = marathonService;
-    }
-
-    @MockBean
-    private MarathonRepository marathonRepository;
-
-    @BeforeEach
-    public void setUp() {
-        Marathon marathon = new Marathon();
-        marathon.setTitle("newMarathon");
-        Mockito.when(marathonRepository.findByTitle("newMarathon")).thenReturn(marathon);
-    }
-
-    @Test
-    public void MarathonTest() {
-        String searchTitle = "newMarathon";
-        String actual = marathonRepository.findByTitle(searchTitle).getTitle();
-        Assert.assertEquals(actual, searchTitle);
-    }
+//    @TestConfiguration
+//    static class MarathonServiceTestConfiguration {
+//        @Bean
+//        public MarathonServiceImpl marathonService() {
+//            return new MarathonServiceImpl();
+//        }
+//    }
+//
+//    private MarathonService marathonService;
+//
+//    @Autowired
+//    public void setMarathonService(MarathonService marathonService) {
+//        this.marathonService = marathonService;
+//    }
+//
+//    @MockBean
+//    private MarathonRepository marathonRepository;
+//
+//    @BeforeEach
+//    public void setUp() {
+//        Marathon marathon = new Marathon();
+//        marathon.setTitle("newMarathon");
+//        Mockito.when(marathonRepository.findByTitle("newMarathon")).thenReturn(marathon);
+//    }
+//
+//    @Test
+//    public void MarathonTest() {
+//        String searchTitle = "newMarathon";
+//        String actual = marathonRepository.findByTitle(searchTitle).getTitle();
+//        Assert.assertEquals(actual, searchTitle);
+//    }
 
 //    @Test
 //    void contextLoads() {

@@ -9,6 +9,4 @@ public interface MarathonRepository extends JpaRepository<Marathon, Long> {
     Marathon getMarathonById(Long id);
 
     void deleteMarathonById(Long id);
-
-    Marathon findByTitle(String title);
 }
