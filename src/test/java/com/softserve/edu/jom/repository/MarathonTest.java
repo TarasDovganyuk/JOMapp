@@ -2,7 +2,6 @@ package com.softserve.edu.jom.repository;
 
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.service.MarathonService;
-import org.apache.catalina.LifecycleState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,11 +17,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 public class MarathonTest {
-    @Autowired
     private MockMvc mockMvc;
+    private MarathonService marathonService;
 
     @Autowired
-    private MarathonService marathonService;
+    public void setMockMvc(MockMvc mockMvc) {
+        this.mockMvc = mockMvc;
+    }
+
+    @Autowired
+    public void setMarathonService(MarathonService marathonService) {
+        this.marathonService = marathonService;
+    }
 
     @Test
     public void getAllMarathonsTest() throws Exception {
@@ -43,9 +49,9 @@ public class MarathonTest {
 
     @Test
     public void updateMarathon() {
-        Marathon marathon = marathonService.getMarathonById(2L);
-        marathon.setTitle("JavaScript Online Marathon Updated");
-        marathonService.createOrUpdate(marathon);
-        assertEquals(marathonService.getMarathonById(2L).getTitle(), marathon.getTitle());
+        Marathon actual = marathonService.getMarathonById(2L);
+        actual.setTitle("JavaScript Online Marathon Updated");
+        marathonService.createOrUpdate(actual);
+        assertEquals(marathonService.getMarathonById(2L).getTitle(), actual.getTitle());
     }
 }

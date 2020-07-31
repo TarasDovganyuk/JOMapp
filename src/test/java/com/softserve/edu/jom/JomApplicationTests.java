@@ -30,7 +30,7 @@ class JomApplicationTests {
 //    }
 //
 //    private MarathonService marathonService;
-//
+
 //    @Autowired
 //    public void setMarathonService(MarathonService marathonService) {
 //        this.marathonService = marathonService;
@@ -52,7 +52,7 @@ class JomApplicationTests {
 //        String actual = marathonRepository.findByTitle(searchTitle).getTitle();
 //        Assert.assertEquals(actual, searchTitle);
 //    }
-
+//
 //    @Test
 //    void contextLoads() {
 //    }
