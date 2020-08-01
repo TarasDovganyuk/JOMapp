@@ -30,45 +30,30 @@ public class UserRepositoryTest {
         this.userRepository = userRepository;
     }
 
+
     @Test
-    public void testGetUserById() {
-        User foundUser = userRepository.getUserById(1L);
-        assertNotNull(foundUser);
-        assertEquals(1L, foundUser.getId());
-        assertEquals("Alex", foundUser.getFirstName());
-        assertEquals("Smith", foundUser.getLastName());
-        assertEquals("alex@gmail.com", foundUser.getEmail());
-        assertEquals("qweee1", foundUser.getPassword());
-        assertEquals(User.Role.TRAINEE, foundUser.getRole());
+    public void testCreateUser() {
+        User user = createNewUser();
+        User savedUser = userRepository.save(user);
+        assertNotNull(savedUser);
+        assertNotNull(savedUser.getId());
+        assertEquals(user.getFirstName(), savedUser.getFirstName());
+        assertEquals(user.getLastName(), savedUser.getLastName());
+        assertEquals(user.getPassword(), savedUser.getPassword());
+        assertEquals(user.getRole(), savedUser.getRole());
+        assertEquals(user.getEmail(), savedUser.getEmail());
     }
 
     @Test
-    public void testGetUserWhenNotExist() {
-        User foundUser = userRepository.getUserById(10L);
-        assertNull(foundUser);
-    }
-
-    @Test
-    public void testSaveUser() {
-        User user = new User();
-        String firstName = "Tumi";
-        user.setFirstName(firstName);
-        String lastName = "Multitumi";
-        user.setLastName(lastName);
-        User.Role role = User.Role.TRAINEE;
-        user.setRole(role);
-        String password = "Qwerty";
-        user.setPassword(password);
-        String email = "tumi@gmail.com";
-        user.setEmail(email);
-        User savedUser = userRepository.saveAndFlush(user);
-        User foundUser = userRepository.getUserById(savedUser.getId());
-        assertNotNull(foundUser);
-        assertEquals(firstName, foundUser.getFirstName());
-        assertEquals(lastName, foundUser.getLastName());
-        assertEquals(email, foundUser.getEmail());
-        assertEquals(password, foundUser.getPassword());
-        assertEquals(role, foundUser.getRole());
+    public void testUpdateUser() {
+        String newName = "Vladlen";
+        Long userId = 1L;
+        User user = userRepository.getOne(userId);
+        assertNotEquals(newName, user.getFirstName());
+        user.setFirstName(newName);
+        userRepository.save(user);
+        User savedUser = userRepository.getUserById(userId);
+        assertEquals(newName, savedUser.getFirstName());
     }
 
     @Test
@@ -114,5 +99,54 @@ public class UserRepositoryTest {
 
         users = userRepository.findByRoleAndMarathonId(User.Role.TRAINEE, 1L);
         assertEquals(2, users.size());
+    }
+
+    @Test
+    public void testGetUserById() {
+        User user = userRepository.getUserById(2L);
+        assertEquals("Mariana", user.getFirstName());
+        assertEquals("Kuzma", user.getLastName());
+        assertEquals("qweee2", user.getPassword());
+        assertEquals(User.Role.TRAINEE, user.getRole());
+        assertEquals("mari@gmail.com", user.getEmail());
+    }
+
+    @Test
+    public void testGetUserWhenNotExist() {
+        User foundUser = userRepository.getUserById(10L);
+        assertNull(foundUser);
+    }
+
+    @Test
+    public void testGetAll() {
+        List<User> userList = userRepository.findAll();
+        assertEquals(5, userList.size());
+    }
+
+    @Test
+    public void testGetAllByRole() {
+        List<User> mentorList = userRepository.getAllByRole(User.Role.MENTOR);
+        assertEquals(2, mentorList.size());
+    }
+
+    @Test
+    public void testGetAllByRoleAndMarathonId() {
+        List<User> mentorList = userRepository.findByRoleAndMarathonId(User.Role.MENTOR, 2L);
+        assertEquals(1, mentorList.size());
+        assertEquals("Gari", mentorList.get(0).getFirstName());
+        assertEquals("Curl", mentorList.get(0).getLastName());
+        assertEquals("qweee", mentorList.get(0).getPassword());
+        assertEquals(User.Role.MENTOR, mentorList.get(0).getRole());
+        assertEquals("gari@gmail.com", mentorList.get(0).getEmail());
+    }
+
+    private User createNewUser() {
+        User user = new User();
+        user.setFirstName("Alex");
+        user.setLastName("Smith");
+        user.setEmail("alex.smith@gmail.com");
+        user.setPassword("asdasdsd");
+        user.setRole(User.Role.MENTOR);
+        return user;
     }
 }

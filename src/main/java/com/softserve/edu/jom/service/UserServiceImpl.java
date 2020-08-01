@@ -60,7 +60,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllByRoleAndMarathonId(String role, Long marathonId) {
+        try {
         return userRepository.findByRoleAndMarathonId(User.Role.valueOf(role.toUpperCase()), marathonId);
+        } catch (Exception e) {
+            throw new UserServiceException(e.getMessage(), e);
+        }
     }
 
     @Override
