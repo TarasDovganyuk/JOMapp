@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -46,6 +47,18 @@ public class ProgressServiceImpl implements ProgressService {
 
     @Override
     public Progress addOrUpdateProgress(Progress progress) {
+        if (progress.getId() != null) {
+            Optional<Progress> existedProgress = progressRepository.findById(progress.getId());
+            if (existedProgress.isPresent()) {
+                Progress newProgress = existedProgress.get();
+                newProgress.setStatus(progress.getStatus());
+                newProgress.setUpdated(progress.getUpdated());
+                newProgress.setStarted(progress.getStarted());
+                newProgress.setUser(progress.getUser());
+                newProgress.setTask(progress.getTask());
+                progressRepository.save(progress);
+            }
+        }
         return progressRepository.save(progress);
 
     }

@@ -30,7 +30,6 @@ public class UserRepositoryTest {
         this.userRepository = userRepository;
     }
 
-
     @Test
     public void testCreateUser() {
         User user = createNewUser();

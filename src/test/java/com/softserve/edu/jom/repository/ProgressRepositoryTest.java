@@ -2,6 +2,8 @@ package com.softserve.edu.jom.repository;
 
 import com.softserve.edu.jom.JomApplication;
 import com.softserve.edu.jom.model.Progress;
+import com.softserve.edu.jom.model.Task;
+import com.softserve.edu.jom.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +22,62 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @ContextConfiguration(classes = JomApplication.class)
 class ProgressRepositoryTest {
-    @Autowired
     TestEntityManager entityManager;
 
-    @Autowired
     ProgressRepository progressRepository;
+
+    @Autowired
+    public void setEntityManager(TestEntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    @Autowired
+    public void setProgressRepository(ProgressRepository progressRepository) {
+        this.progressRepository = progressRepository;
+    }
+
+    @Test
+    public void testProgressById() {
+        Progress progress = progressRepository.getOne(1L);
+        assertEquals(LocalDateTime.of(2020, 07, 05, 0, 0), progress.getStarted());
+        assertEquals(LocalDateTime.of(2020, 07, 05, 0, 0), progress.getUpdated());
+        assertEquals(Progress.TaskStatus.PENDING, progress.getStatus());
+        assertNotNull(progress.getUser());
+        assertEquals(1, progress.getUser().getId());
+        assertNotNull(progress.getTask());
+        assertEquals(1, progress.getTask().getId());
+    }
+
+    @Test
+    public void testGetProgressWhenNotExist() {
+        Optional<Progress> foundProgress = progressRepository.findById(100000L);
+        assertFalse(foundProgress.isPresent());
+    }
+
+    @Test
+    public void testCreateProgress() {
+        Progress progress = createNewProgress();
+        Progress savedProgress = progressRepository.save(progress);
+        assertNotNull(savedProgress);
+        assertNotNull(savedProgress.getId());
+        assertEquals(progress.getStarted(), savedProgress.getStarted());
+        assertEquals(progress.getUpdated(), savedProgress.getUpdated());
+        assertEquals(progress.getStatus(), savedProgress.getStatus());
+        assertEquals(progress.getTask().getId(), savedProgress.getTask().getId());
+        assertEquals(progress.getUser().getId(), savedProgress.getUser().getId());
+    }
+
+    @Test
+    public void testUpdateProgress() {
+        Progress.TaskStatus newStatus = Progress.TaskStatus.PASS;
+        Long progressId = 1L;
+        Progress progress = entityManager.find(Progress.class, progressId);
+        assertNotEquals(newStatus, progress.getStatus());
+        progress.setStatus(newStatus);
+        progressRepository.saveAndFlush(progress);
+        Progress savedProgress = entityManager.find(Progress.class, progressId);
+        assertEquals(newStatus, savedProgress.getStatus());
+    }
 
     @Test
     public void testFindByUserIdAndMarathonId() {
@@ -45,23 +98,14 @@ class ProgressRepositoryTest {
         assertEquals(5, progressList.get(0).getId());
     }
 
-    @Test
-    public void testGetProgressById() {
-        Optional<Progress> foundProgressOptional = progressRepository.findById(1L);
-        assertTrue(foundProgressOptional.isPresent());
-        Progress foundProgress = foundProgressOptional.get();
-        assertEquals(LocalDateTime.of(2020, 07, 05, 0, 0), foundProgress.getStarted());
-        assertEquals(LocalDateTime.of(2020, 07, 05, 0, 0), foundProgress.getUpdated());
-        assertEquals(Progress.TaskStatus.PENDING, foundProgress.getStatus());
-        assertNotNull(foundProgress.getUser());
-        assertEquals(1, foundProgress.getUser().getId());
-        assertNotNull(foundProgress.getTask());
-        assertEquals(1, foundProgress.getTask().getId());
-    }
 
-    @Test
-    public void testGetProgressWhenNotExist() {
-        Optional<Progress> foundProgress = progressRepository.findById(100000L);
-        assertFalse(foundProgress.isPresent());
+    private Progress createNewProgress() {
+        Progress progress = new Progress();
+        progress.setStatus(Progress.TaskStatus.PENDING);
+        progress.setTask(entityManager.find(Task.class, 3L));
+        progress.setUser(entityManager.find(User.class, 2L));
+        progress.setStarted(LocalDateTime.of(2020, 7, 31, 17, 30));
+        progress.setUpdated(LocalDateTime.of(2020, 8, 01, 9, 30));
+        return progress;
     }
 }
