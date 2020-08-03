@@ -1,12 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Error page</title>
+    <link href="/css/main.css" rel="stylesheet">
+</head>
 <body>
 <h1>Something went wrong! </h1>
 <h2>Our Engineers are on it</h2>
 <a href="/">Go Home</a>
-<h2 th:if="${statusCode}" th:text="'code: ' + ${statusCode}"></h2>
-<h2 th:if="${errorException}" th:text="${errorException}"></h2>
-<h3 th:if="${requestUrl}" th:text="'url: ' + ${requestUrl}"></h3>
+<table border="1">
+    <tr>
+        <td>Date</td>
+        <td  th:text="${timestamp}"></td>
+    </tr>
+    <tr>
+        <td>Path</td>
+        <td th:text="${path}"></td>
+    </tr>
+    <tr>
+        <td>Error</td>
+        <td th:text="${error}"></td>
+    </tr>
+    <tr>
+        <td>Status</td>
+        <td th:text="${status}"></td>
+    </tr>
+    <tr>
+        <td>Message</td>
+        <td th:text="${message}"></td>
+    </tr>
+    <tr>
+        <td>Exception</td>
+        <td th:text="${exception}"></td>
+    </tr>
+    <tr>
+        <td>Trace</td>
+        <td>
+            <pre th:text="${trace}"></pre>
+        </td>
+    </tr>
+</table>
 </body>
 </html>
