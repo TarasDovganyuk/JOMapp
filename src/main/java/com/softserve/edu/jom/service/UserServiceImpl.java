@@ -37,6 +37,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getStudentById(Long id) {
+        Validate.notNull(id, "User id must not be null!");
+        return userRepository.getUserByIdAndRole(id, User.Role.TRAINEE);
+    }
+
+    @Override
     public User createOrUpdateUser(User user) {
         if (user.getId() != null) {
             User existedUser = getUserById(user.getId());
@@ -61,7 +67,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllByRoleAndMarathonId(String role, Long marathonId) {
         try {
-        return userRepository.findByRoleAndMarathonId(User.Role.valueOf(role.toUpperCase()), marathonId);
+            return userRepository.findByRoleAndMarathonId(User.Role.valueOf(role.toUpperCase()), marathonId);
         } catch (Exception e) {
             throw new UserServiceException(e.getMessage(), e);
         }

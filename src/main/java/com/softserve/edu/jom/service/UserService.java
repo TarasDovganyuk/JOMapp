@@ -10,6 +10,8 @@ public interface UserService {
 
     User getUserById(Long id);
 
+    User getStudentById(Long id);
+
     User createOrUpdateUser(User user);
 
     List<User> getAllByRole(String role) throws UserServiceException;
