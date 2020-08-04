@@ -63,7 +63,7 @@ public class StudentControllerTest {
 
     @Test
     public void createNewStudentTest() throws Exception {
-        User user = createNewUser();
+        User user = createNewStudent();
         mockMvc.perform(MockMvcRequestBuilders.post("/addStudent")
                 .flashAttr("student", user))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
@@ -72,10 +72,12 @@ public class StudentControllerTest {
 
     @Test
     public void showAddStudentPageTest() throws Exception {
+        User expectedUser = new User();
+        expectedUser.setRole(User.Role.TRAINEE);
         mockMvc.perform(get("/addStudent"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attributeExists("user"))
-                .andExpect(MockMvcResultMatchers.model().attribute("user", new User()))
+                .andExpect(MockMvcResultMatchers.model().attribute("user", expectedUser))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("mode"))
                 .andExpect(MockMvcResultMatchers.model().attribute("mode", "Add"))
                 .andExpect(view().name("changeStudent"));
@@ -99,7 +101,7 @@ public class StudentControllerTest {
 
     @Test
     public void addNewStudentToMarathonTest() throws Exception {
-        User user = createNewUser();
+        User user = createNewStudent();
         Long marathonId = 1L;
         mockMvc.perform(MockMvcRequestBuilders.post("/students/{marathon_id}/add", marathonId)
                 .flashAttr("student", user))
@@ -135,10 +137,12 @@ public class StudentControllerTest {
     @Test
     public void showAddStudentToMarathon() throws Exception {
         Long marathonId = 1L;
+        User expectedUser = new User();
+        expectedUser.setRole(User.Role.TRAINEE);
         mockMvc.perform(MockMvcRequestBuilders.get("/students/{marathon_id}/add", marathonId))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attributeExists("user"))
-                .andExpect(MockMvcResultMatchers.model().attribute("user", new User()))
+                .andExpect(MockMvcResultMatchers.model().attribute("user", expectedUser))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("mode"))
                 .andExpect(MockMvcResultMatchers.model().attribute("mode", "Add"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("marathonId"))
@@ -146,12 +150,13 @@ public class StudentControllerTest {
                 .andExpect(view().name("changeStudent"));
     }
 
-    private User createNewUser() {
+    private User createNewStudent() {
         User user = new User();
         user.setFirstName("Alex");
         user.setLastName("Smith");
         user.setEmail("alex.smith@gmail.com");
         user.setPassword("asdasdsd");
+        user.setRole(User.Role.TRAINEE);
         return user;
     }
 }

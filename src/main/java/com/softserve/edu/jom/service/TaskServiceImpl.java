@@ -1,6 +1,5 @@
 package com.softserve.edu.jom.service;
 
-import com.softserve.edu.jom.exception.TaskServiceException;
 import com.softserve.edu.jom.model.Sprint;
 import com.softserve.edu.jom.model.Task;
 import com.softserve.edu.jom.repository.TaskRepository;
@@ -25,18 +24,16 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task addTaskToSprint(Task task, Sprint sprint) {
         Task newTask = new Task();
-        try {
-            Validate.notNull(task.getTitle(), "Title must be not null");
 
-            newTask.setCreated(task.getCreated());
-            newTask.setTitle(task.getTitle());
-            newTask.setSprint(sprint);
-            if (task.getUpdated() != null) {
-                newTask.setUpdated(task.getUpdated());
-            }
-        } catch (Exception e) {
-            throw new TaskServiceException(e.getMessage(), e);
+        Validate.notNull(task.getTitle(), "Title must be not null");
+
+        newTask.setCreated(task.getCreated());
+        newTask.setTitle(task.getTitle());
+        newTask.setSprint(sprint);
+        if (task.getUpdated() != null) {
+            newTask.setUpdated(task.getUpdated());
         }
+
         return taskRepository.save(newTask);
     }
 

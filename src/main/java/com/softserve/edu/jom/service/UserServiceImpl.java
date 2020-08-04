@@ -1,6 +1,5 @@
 package com.softserve.edu.jom.service;
 
-import com.softserve.edu.jom.exception.UserServiceException;
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.model.User;
 import com.softserve.edu.jom.repository.MarathonRepository;
@@ -53,52 +52,40 @@ public class UserServiceImpl implements UserService {
             return userRepository.save(existedUser);
         }
         return userRepository.save(user);
+
     }
 
     @Override
-    public List<User> getAllByRole(String role) throws UserServiceException {
-        try {
-            return userRepository.getAllByRole(User.Role.valueOf(role.toUpperCase()));
-        } catch (Exception e) {
-            throw new UserServiceException(e.getMessage(), e);
-        }
+    public List<User> getAllByRole(String role) {
+        return userRepository.getAllByRole(User.Role.valueOf(role.toUpperCase()));
+
     }
 
     @Override
     public List<User> getAllByRoleAndMarathonId(String role, Long marathonId) {
-        try {
-            return userRepository.findByRoleAndMarathonId(User.Role.valueOf(role.toUpperCase()), marathonId);
-        } catch (Exception e) {
-            throw new UserServiceException(e.getMessage(), e);
-        }
+        return userRepository.findByRoleAndMarathonId(User.Role.valueOf(role.toUpperCase()), marathonId);
+
     }
 
     @Override
     public boolean addUserToMarathon(User user, Long marathonId) {
-        try {
-            Marathon existedMarathon = marathonRepository.getOne(marathonId);
-            Validate.notNull(existedMarathon, "Marathon with id = %s is not found!", marathonId);
-            existedMarathon.getUsers().add(user);
-            return marathonRepository.save(existedMarathon) != null;
-        } catch (Exception e) {
-            throw new UserServiceException(e.getMessage(), e);
-        }
+        Marathon existedMarathon = marathonRepository.getOne(marathonId);
+        Validate.notNull(existedMarathon, "Marathon with id = %s is not found!", marathonId);
+        existedMarathon.getUsers().add(user);
+        return marathonRepository.save(existedMarathon) != null;
+
     }
 
     @Override
     public boolean removeUserFromMarathon(Long userId, Long marathonId) {
-        try {
-            User user = getUserById(userId);
-            Validate.notNull(user, "User with id = %s is not found!", userId);
-            Marathon marathon = marathonRepository.getOne(marathonId);
-            Validate.notNull(marathon, "Marathon with id = %s is not found!", marathonId);
-            Set<User> newUserLinkedSet = marathon.getUsers().stream().filter(u -> u.getId() != userId).collect(Collectors.toSet());
-            marathon.getUsers().clear();
-            marathon.getUsers().addAll(newUserLinkedSet);
-            marathonRepository.save(marathon);
-        } catch (Exception e) {
-            throw new UserServiceException(e.getMessage(), e);
-        }
+        User user = getUserById(userId);
+        Validate.notNull(user, "User with id = %s is not found!", userId);
+        Marathon marathon = marathonRepository.getOne(marathonId);
+        Validate.notNull(marathon, "Marathon with id = %s is not found!", marathonId);
+        Set<User> newUserLinkedSet = marathon.getUsers().stream().filter(u -> u.getId() != userId).collect(Collectors.toSet());
+        marathon.getUsers().clear();
+        marathon.getUsers().addAll(newUserLinkedSet);
+        marathonRepository.save(marathon);
         return true;
     }
 

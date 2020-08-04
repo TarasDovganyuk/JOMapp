@@ -9,13 +9,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -38,9 +41,14 @@ public class StudentController {
     }
 
     @PostMapping("/addStudent")
-    public String addStudent(Model model, @ModelAttribute(name = "student") User user) {
+    public String addStudent(Model model, @ModelAttribute(name = "student") @Valid User user, BindingResult bindingResult) {
         logger.info("Add new student %s %s", user.getFirstName(), user.getLastName());
-        user.setRole(User.Role.TRAINEE);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", user);
+            model.addAttribute("mode", "Add");
+            model.addAttribute("errorMessage", getErrorMessage(bindingResult));
+            return "changeStudent";
+        }
         userService.createOrUpdateUser(user);
         return "redirect:/students";
 
@@ -49,7 +57,7 @@ public class StudentController {
     @GetMapping("/addStudent")
     public String showAddStudentPage(Model model) {
         logger.info("Show add new student page");
-        User user = new User();
+        User user = createNewStudent();
         model.addAttribute("user", user);
         model.addAttribute("mode", "Add");
         return "changeStudent";
@@ -78,10 +86,16 @@ public class StudentController {
     }
 
     @PostMapping("/students/{marathon_id}/add")
-    public String saveStudentToMarathon(@ModelAttribute(name = "student") User user, @PathVariable(name = "marathon_id") Long marathon_id) {
+    public String saveStudentToMarathon(Model model, @ModelAttribute(name = "student") @Valid User user, BindingResult bindingResult,
+                                        @PathVariable(name = "marathon_id") Long marathon_id) {
         logger.info("Add new student to marathon with id=%d", marathon_id);
         checkMarathonExists(marathon_id);
-        user.setRole(User.Role.TRAINEE);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", user);
+            model.addAttribute("mode", "Add");
+            model.addAttribute("errorMessage", getErrorMessage(bindingResult));
+            return "changeStudent";
+        }
         userService.addUserToMarathon(user, marathon_id);
         return "redirect:/students/" + marathon_id;
     }
@@ -90,7 +104,7 @@ public class StudentController {
     public String addStudentToMarathon(Model model, @PathVariable(name = "marathon_id") Long marathon_id) {
         logger.info("Show page to add new student to marathon with id=%d", marathon_id);
         checkMarathonExists(marathon_id);
-        User user = new User();
+        User user = createNewStudent();
         model.addAttribute("user", user);
         model.addAttribute("marathonId", marathon_id);
         model.addAttribute("mode", "Add");
@@ -109,14 +123,24 @@ public class StudentController {
     }
 
     @PostMapping("/students/{marathon_id}/edit/{student_id}")
-    public String editStudentPage(Model model, @PathVariable(name = "marathon_id") Long marathon_id, @PathVariable(name = "student_id") Long student_id, @ModelAttribute(name = "student") User user) {
+    public String editStudentPage(Model model, @PathVariable(name = "marathon_id") Long marathon_id,
+                                  @PathVariable(name = "student_id") Long student_id,
+                                  @ModelAttribute(name = "student") @Valid User user, BindingResult bindingResult) {
         logger.info("Edit student with id=%d and marathon with id=%d", student_id, marathon_id);
         checkMarathonExists(marathon_id);
         checkStudentExists(student_id);
-        user.setId(student_id);
-        user.setRole(User.Role.TRAINEE);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", user);
+            model.addAttribute("mode", "Edit");
+            model.addAttribute("errorMessage", getErrorMessage(bindingResult));
+            return "changeStudent";
+        }
         userService.createOrUpdateUser(user);
         return "redirect:/students/" + marathon_id;
+    }
+
+    private String getErrorMessage(BindingResult bindingResult) {
+        return bindingResult.getFieldErrors().stream().map(i -> i.getDefaultMessage()).collect(Collectors.joining(";"));
     }
 
     private Marathon checkMarathonExists(Long marathon_id) {
@@ -133,5 +157,27 @@ public class StudentController {
             throw new EntityNotFoundException(String.format("Student with id=%d not found!", student_id));
         }
         return student;
+    }
+
+
+//    @ExceptionHandler(ConstraintViolationException.class)
+//    public ModelAndView handleConstraintViolationException(ConstraintViolationException ex, HttpServletRequest request) {
+//        String exceptionMessage = ex.getLocalizedMessage();
+//        if (ex.getConstraintViolations() != null) {
+//            exceptionMessage = ex.getConstraintViolations().stream().map(c -> c.getMessageTemplate()).collect(Collectors.joining(";"));
+//        }
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("timestamp", LocalDateTime.now());
+//        modelAndView.addObject("exception", ex);
+//        modelAndView.addObject("path", request.getRequestURL());
+//        modelAndView.addObject("errorMessage", exceptionMessage);
+//        modelAndView.setViewName("error");
+//        return modelAndView;
+//    }
+
+    private User createNewStudent() {
+        User user = new User();
+        user.setRole(User.Role.TRAINEE);
+        return user;
     }
 }

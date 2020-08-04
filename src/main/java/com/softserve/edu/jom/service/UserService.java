@@ -1,6 +1,5 @@
 package com.softserve.edu.jom.service;
 
-import com.softserve.edu.jom.exception.UserServiceException;
 import com.softserve.edu.jom.model.User;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public interface UserService {
 
     User createOrUpdateUser(User user);
 
-    List<User> getAllByRole(String role) throws UserServiceException;
+    List<User> getAllByRole(String role);
 
     List<User> getAllByRoleAndMarathonId(String role, Long marathonId);
 

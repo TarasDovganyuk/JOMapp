@@ -1,6 +1,5 @@
 package com.softserve.edu.jom.service;
 
-import com.softserve.edu.jom.exception.ProgressServiceException;
 import com.softserve.edu.jom.model.Progress;
 import com.softserve.edu.jom.model.Task;
 import com.softserve.edu.jom.model.User;
@@ -10,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import javax.transaction.Transactional;
 
@@ -55,7 +55,7 @@ public class ProgressServiceDBTest {
     public void testAddTaskToStudentWhenTaskAlreadyAddedToGivenStudent() {
         User user = entityManager.find(User.class, 1L);
         Task task = entityManager.find(Task.class, 1L);
-        assertThrows(ProgressServiceException.class, () -> {
+        assertThrows(DataIntegrityViolationException.class, () -> {
             progressService.addTaskForStudent(task, user);
         });
     }

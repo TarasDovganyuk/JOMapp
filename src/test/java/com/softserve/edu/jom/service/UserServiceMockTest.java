@@ -1,6 +1,5 @@
 package com.softserve.edu.jom.service;
 
-import com.softserve.edu.jom.exception.UserServiceException;
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.model.User;
 import com.softserve.edu.jom.repository.MarathonRepository;
@@ -94,7 +93,7 @@ public class UserServiceMockTest {
     @Test
     public void testGetAllByRoleWhenRoleWrong() {
         Mockito.when(userRepository.getAllByRole(User.Role.MENTOR)).thenReturn(Arrays.asList(createUser()));
-        assertThrows(UserServiceException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             userService.getAllByRole("wrong_role");
         });
     }
@@ -103,7 +102,7 @@ public class UserServiceMockTest {
     public void testAddUserToNonExistingMarathon() {
         long marathonId = 1000L;
         Mockito.when(marathonRepository.getOne(marathonId)).thenReturn(null);
-        assertThrows(UserServiceException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             userService.addUserToMarathon(createUser(), marathonId);
         });
     }
@@ -114,7 +113,7 @@ public class UserServiceMockTest {
         long marathonId = 1000L;
         Mockito.when(marathonRepository.getOne(marathonId)).thenReturn(null);
         Mockito.when(userRepository.getOne(userId)).thenReturn(createUser());
-        assertThrows(UserServiceException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             userService.removeUserFromMarathon(userId, marathonId);
         });
     }
@@ -125,7 +124,7 @@ public class UserServiceMockTest {
         long marathonId = 1000L;
         Mockito.when(marathonRepository.getOne(marathonId)).thenReturn(new Marathon());
         Mockito.when(userRepository.getOne(userId)).thenReturn(null);
-        assertThrows(UserServiceException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             userService.removeUserFromMarathon(userId, marathonId);
         });
     }
@@ -148,7 +147,7 @@ public class UserServiceMockTest {
     public void testGetAllByRoleAndMarathonIdWithNotExistingRole() {
         User expected = createUser();
         Mockito.when(userRepository.findByRoleAndMarathonId(User.Role.MENTOR, 2L)).thenReturn(Arrays.asList(expected));
-        assertThrows(UserServiceException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             userService.getAllByRoleAndMarathonId("NOT_EXISTING", 2L);
         });
     }

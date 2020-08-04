@@ -1,6 +1,5 @@
 package com.softserve.edu.jom.service;
 
-import com.softserve.edu.jom.exception.ProgressServiceException;
 import com.softserve.edu.jom.model.Progress;
 import com.softserve.edu.jom.model.Task;
 import com.softserve.edu.jom.model.User;
@@ -30,7 +29,6 @@ public class ProgressServiceImpl implements ProgressService {
 
     @Override
     public Progress addTaskForStudent(Task task, User user) {
-        try {
             User existedUser = userRepository.getOne(user.getId());
             Validate.notNull(existedUser, "User with id = %s doesn't exist!", user.getId());
             Progress newProgress = new Progress();
@@ -40,9 +38,7 @@ public class ProgressServiceImpl implements ProgressService {
             Validate.notNull(existedTask, "Task with id = %s doesn't exist!", task.getId());
             newProgress.setTask(existedTask);
             return progressRepository.save(newProgress);
-        } catch (Exception e) {
-            throw new ProgressServiceException(e.getMessage(), e);
-        }
+
     }
 
     @Override

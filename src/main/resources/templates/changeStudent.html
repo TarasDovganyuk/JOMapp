@@ -10,14 +10,8 @@
 <h1 th:if="${marathonId}" th:utext="${mode} +' student to marathon with id ' + ${marathonId}"></h1>
 <form th:object="${user}" method="POST">
     <table>
-        <tr th:if="${mode} == 'Edit'">
-            <td>
-                <label for="id">Id: </label>
-            </td>
-            <td>
-                <input type="text" th:field="*{id}" id="id" disabled>
-            </td>
-        </tr>
+        <input type="hidden" th:field="*{id}" id="id">
+        <input type="hidden" th:field="*{role}" id="role">
         <tr>
             <td>
                 <label for="firstName">First Name: </label>
@@ -42,12 +36,13 @@
                 <input type="email" th:field="*{email}" id="email">
             </td>
         </tr>
-        <tr th:if="${mode} == 'Add'">
+        <tr>
             <td>
-                <label for="password">Password: </label>
+                <label for="password" th:if="${mode} == 'Add'">Password: </label>
             </td>
             <td>
-                <input type="password" th:field="*{password}" id="password">
+                <input type="password" th:type="${mode} == 'Add'? 'text' : 'hidden'" th:field="*{password}"
+                       id="password">
             </td>
         </tr>
         <tr>
@@ -62,5 +57,11 @@
 </form>
 
 <br/>
+<!-- Check if errorMessage is not null and not empty -->
+
+<div th:if="${errorMessage}" th:utext="${errorMessage}"
+     style="color:red;font-style:italic;">
+    ...
+</div>
 </body>
 </html>
