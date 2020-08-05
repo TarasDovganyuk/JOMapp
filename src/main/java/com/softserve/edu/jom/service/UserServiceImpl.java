@@ -1,11 +1,14 @@
 package com.softserve.edu.jom.service;
 
+import com.softserve.edu.jom.exception.DuplicateUserEmailException;
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.model.User;
 import com.softserve.edu.jom.repository.MarathonRepository;
 import com.softserve.edu.jom.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -43,15 +46,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createOrUpdateUser(User user) {
-        if (user.getId() != null) {
-            User existedUser = getUserById(user.getId());
-            existedUser.setFirstName(user.getFirstName());
-            existedUser.setLastName(user.getLastName());
-            existedUser.setEmail(user.getEmail());
-            existedUser.setRole(user.getRole());
-            return userRepository.save(existedUser);
+        try {
+            if (user.getId() != null) {
+                User existedUser = getUserById(user.getId());
+                existedUser.setFirstName(user.getFirstName());
+                existedUser.setLastName(user.getLastName());
+                existedUser.setEmail(user.getEmail());
+                existedUser.setRole(user.getRole());
+                return userRepository.save(existedUser);
+            }
+            return userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            log.error("Duplicate user email exception raised when trying to save user with email %s", user.getEmail());
+            throw new DuplicateUserEmailException(String.format("Duplicate user email %s", user.getEmail()), e);
         }
-        return userRepository.save(user);
 
     }
 

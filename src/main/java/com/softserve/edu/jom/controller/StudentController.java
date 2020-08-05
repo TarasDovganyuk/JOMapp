@@ -1,5 +1,6 @@
 package com.softserve.edu.jom.controller;
 
+import com.softserve.edu.jom.exception.DuplicateUserEmailException;
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.model.User;
 import com.softserve.edu.jom.service.MarathonService;
@@ -7,16 +8,18 @@ import com.softserve.edu.jom.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -160,20 +163,18 @@ public class StudentController {
     }
 
 
-//    @ExceptionHandler(ConstraintViolationException.class)
-//    public ModelAndView handleConstraintViolationException(ConstraintViolationException ex, HttpServletRequest request) {
-//        String exceptionMessage = ex.getLocalizedMessage();
-//        if (ex.getConstraintViolations() != null) {
-//            exceptionMessage = ex.getConstraintViolations().stream().map(c -> c.getMessageTemplate()).collect(Collectors.joining(";"));
-//        }
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("timestamp", LocalDateTime.now());
-//        modelAndView.addObject("exception", ex);
-//        modelAndView.addObject("path", request.getRequestURL());
-//        modelAndView.addObject("errorMessage", exceptionMessage);
-//        modelAndView.setViewName("error");
-//        return modelAndView;
-//    }
+    @ExceptionHandler(DuplicateUserEmailException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    public ModelAndView handleDuplicateUserEmailException(DuplicateUserEmailException ex, HttpServletRequest request) {
+        logger.warn("Duplicate email exception raised. %s", ex.getMessage());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("timestamp", LocalDateTime.now());
+        modelAndView.addObject("exception", ex);
+        modelAndView.addObject("path", request.getRequestURL());
+        modelAndView.addObject("message", ex.getMessage());
+        modelAndView.setViewName("error");
+        return modelAndView;
+    }
 
     private User createNewStudent() {
         User user = new User();
