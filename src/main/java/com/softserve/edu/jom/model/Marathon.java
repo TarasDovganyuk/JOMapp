@@ -1,11 +1,12 @@
 package com.softserve.edu.jom.model;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,14 +19,16 @@ public class Marathon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank(message = "Title must be populated")
+    @Size(min = 2, max = 20, message =
+        "Title must be between 2 and 20 characters")
     private String title;
 
     @ToString.Exclude
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "marathon_user",
-            joinColumns = @JoinColumn(name = "marathon_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+        joinColumns = @JoinColumn(name = "marathon_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new HashSet<>(0);
 
     @OneToMany(mappedBy = "marathon")
