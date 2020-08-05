@@ -17,9 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -168,9 +166,6 @@ public class StudentController {
     public ModelAndView handleDuplicateUserEmailException(DuplicateUserEmailException ex, HttpServletRequest request) {
         logger.warn("Duplicate email exception raised. %s", ex.getMessage());
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("timestamp", LocalDateTime.now());
-        modelAndView.addObject("exception", ex);
-        modelAndView.addObject("path", request.getRequestURL());
         modelAndView.addObject("message", ex.getMessage());
         modelAndView.setViewName("error");
         return modelAndView;

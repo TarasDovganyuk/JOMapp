@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,13 +23,6 @@ import java.util.Set;
 @Slf4j
 @ControllerAdvice
 public class JomGlobalExceptionHandler {
-
-//    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "EntityNotFoundException occurred")
-//    @ExceptionHandler(EntityNotFoundException.class)
-//    public void handleEntityNotFoundException() {
-//        log.warn("Entity not found exception raised.");
-//    }
-
     @ExceptionHandler(BindException.class)
     public ModelAndView handleValidationException(BindException bindEx) {
         ModelAndView modelAndView = new ModelAndView("error/400");
@@ -40,13 +34,13 @@ public class JomGlobalExceptionHandler {
         return modelAndView;
     }
 
-    @ExceptionHandler(Exception.class)
-    public ModelAndView handleValidationException(Exception ex) {
-        ModelAndView modelAndView = new ModelAndView("error/error");
-        modelAndView.addObject("info", ex.getMessage());
-        modelAndView.setStatus(HttpStatus.I_AM_A_TEAPOT);
-        return modelAndView;
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ModelAndView handleValidationException(Exception ex) {
+//        ModelAndView modelAndView = new ModelAndView("error/error");
+//        modelAndView.addObject("info", ex.getMessage());
+//        modelAndView.setStatus(HttpStatus.I_AM_A_TEAPOT);
+//        return modelAndView;
+//    }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ModelAndView handleEntityNotFoundException(EntityNotFoundException ex) {
@@ -55,36 +49,4 @@ public class JomGlobalExceptionHandler {
         modelAndView.setStatus(HttpStatus.NOT_FOUND);
         return modelAndView;
     }
-
-//    @ExceptionHandler(UserServiceException.class)
-//    public ModelAndView handleAllExceptionMethod(Exception ex, HttpServletRequest request) {
-//        StringBuilder sb = new StringBuilder();
-//
-//        String exceptionMessage = ex.getLocalizedMessage();
-//        if (ex.getCause() instanceof ConstraintViolationException) {
-//            Set<ConstraintViolation<?>> constraintViolations = ((ConstraintViolationException) ex.getCause()).getConstraintViolations();
-//            for (ConstraintViolation constraintViolation : constraintViolations) {
-//                sb.append(constraintViolation.getMessageTemplate());
-//                sb.append(";");
-//            }
-//            exceptionMessage = sb.toString();
-//        }
-//
-////        if (ex.getCause() instanceof DataIntegrityViolationException) {
-////            Set<ConstraintViolation<?>> constraintViolations = ((DataIntegrityViolationException) ex.getCause()).getConstraintViolations();
-////            for (ConstraintViolation constraintViolation : constraintViolations) {
-////                sb.append(constraintViolation.getMessageTemplate());
-////                sb.append(";");
-////            }
-////            exceptionMessage = sb.toString();
-////        }
-//
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("exception", ex);
-//        modelAndView.addObject("path", request.getRequestURL());
-//        modelAndView.addObject("path", request.getRequestURL());
-//        modelAndView.addObject("message", exceptionMessage);
-//        modelAndView.setViewName("error");
-//
-//        return modelAndView;
 }

@@ -29,14 +29,14 @@ body {
     text-align: center;
 }
 
-.error .error-404, .error .error-500, .error .error-400, .error .error {
+.error .error-404, .error .error-500, .error .error-400, .error .error-common {
     position: relative;
     height: 200px;
     margin: 0px auto 20px;
     z-index: -1;
 }
 
-.error .error-404 h1, .error .error-500 h1, .error .error-400 h1, .error .error h1{
+.error .error-404 h1, .error .error-500 h1, .error .error-400 h1, .error .error-common h1{
     font-family: 'Montserrat', sans-serif;
     font-size: 236px;
     font-weight: 200;
@@ -51,7 +51,7 @@ body {
     transform: translate(-50%, -50%);
 }
 
-.error .error-404 h2, .error .error-500 h2, .error .error-400 h2, .error .error h2{
+.error .error-404 h2, .error .error-500 h2, .error .error-400 h2, .error .error-common h2{
     font-family: 'Montserrat', sans-serif;
     font-size: 28px;
     font-weight: 400;
@@ -93,16 +93,16 @@ body {
 }
 
 @media only screen and (max-width: 480px) {
-    error .error-404, error .error-500, .error .error-400, .error .error {
+    error .error-404, error .error-500, .error .error-400, .error .error-common {
         height: 148px;
         margin: 0px auto 10px;
     }
 
-    .error .error-404 h1, .error .error-500 h1, .error .error-400 h1, .error .error h1{
+    .error .error-404 h1, .error .error-500 h1, .error .error-400 h1, .error .error-common h1{
         font-size: 86px;
     }
 
-    .error .error-404 h2, .error .error-500 h2, .error .error-400 h2, .error .error h2{
+    .error .error-404 h2, .error .error-500 h2, .error .error-400 h2, .error .error-common h2{
         font-size: 16px;
     }
 
