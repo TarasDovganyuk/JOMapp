@@ -1,13 +1,16 @@
 package com.softserve.edu.jom.service;
 
+import com.softserve.edu.jom.exception.MarathonIsNotEmptyException;
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.repository.MarathonRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 public class MarathonServiceImpl implements MarathonService {
@@ -31,6 +34,13 @@ public class MarathonServiceImpl implements MarathonService {
 
     @Override
     public void deleteMarathonById(Long id) {
+        Marathon marathon = getMarathonById(id);
+        if (!marathon.getUsers().isEmpty() || !marathon.getSprints().isEmpty()) {
+            log.error(String.format("Marathon deleting error. Marathon id = %d is not empty", id));
+            throw new MarathonIsNotEmptyException(String
+                .format("Marathon id = %d is not empty. Remove students and sprints from marathon before deleting",
+                    id));
+        }
         marathonRepository.deleteMarathonById(id);
     }
 
