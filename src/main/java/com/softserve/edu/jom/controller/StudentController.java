@@ -160,6 +160,11 @@ public class StudentController {
         return student;
     }
 
+    private User createNewStudent() {
+        User user = new User();
+        user.setRole(User.Role.TRAINEE);
+        return user;
+    }
 
     @ExceptionHandler(DuplicateUserEmailException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
@@ -169,11 +174,5 @@ public class StudentController {
         modelAndView.addObject("message", ex.getMessage());
         modelAndView.setViewName("error");
         return modelAndView;
-    }
-
-    private User createNewStudent() {
-        User user = new User();
-        user.setRole(User.Role.TRAINEE);
-        return user;
     }
 }

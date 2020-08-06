@@ -77,11 +77,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addUserToMarathon(User user, Long marathonId) {
-        Marathon existedMarathon = marathonRepository.getOne(marathonId);
-        Validate.notNull(existedMarathon, "Marathon with id = %s is not found!", marathonId);
-        existedMarathon.getUsers().add(user);
-        return marathonRepository.save(existedMarathon) != null;
-
+        try {
+            Marathon existedMarathon = marathonRepository.getOne(marathonId);
+            Validate.notNull(existedMarathon, "Marathon with id = %s is not found!", marathonId);
+            existedMarathon.getUsers().add(user);
+            return marathonRepository.save(existedMarathon) != null;
+        } catch (DataIntegrityViolationException e) {
+            log.error("Duplicate user email exception raised when trying to save user with email %s", user.getEmail());
+            throw new DuplicateUserEmailException(String.format("Duplicate user email %s", user.getEmail()), e);
+        }
     }
 
     @Override
