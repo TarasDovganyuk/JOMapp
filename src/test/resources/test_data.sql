@@ -1,9 +1,13 @@
-INSERT INTO users (id, email, first_name, last_name, password, role)
-VALUES (1, 'alex@gmail.com', 'Alex', 'Smith', 'qweee1', 'TRAINEE'),
-       (2, 'mari@gmail.com', 'Mariana', 'Kuzma', 'qweee2', 'TRAINEE'),
-       (3, 'anna@gmail.com', 'Anna', 'Korzun', 'qweee3', 'TRAINEE'),
-       (4, 'victor@gmail.com', 'Victor', 'Crud', 'qweee', 'MENTOR'),
-       (5, 'gari@gmail.com', 'Gari', 'Curl', 'qweee', 'MENTOR');
+INSERT INTO role(id, role)
+VALUES (1, 'MENTOR'),
+       (2, 'TRAINEE');
+
+INSERT INTO users (id, email, first_name, last_name, password, role_id)
+VALUES (1, 'alex@gmail.com', 'Alex', 'Smith', 'qweee1', 2),
+       (2, 'mari@gmail.com', 'Mariana', 'Kuzma', 'qweee2', 2),
+       (3, 'anna@gmail.com', 'Anna', 'Korzun', 'qweee3', 2),
+       (4, 'victor@gmail.com', 'Victor', 'Crud', 'qweee', 1),
+       (5, 'gari@gmail.com', 'Gari', 'Curl', 'qweee', 1);
 
 INSERT INTO marathon (id, title)
 VALUES (1, 'Java Online Marathon'),

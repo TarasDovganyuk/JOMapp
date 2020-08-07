@@ -10,15 +10,16 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> getAllByRole(User.Role role);
+    @Query("select user from User user where user.role.role =:role")
+    List<User> getAllByRole(@Param("role") User.Role role);
 
     User getUserById(Long id);
 
     User getUserByEmail(String email);
 
-    User getUserByIdAndRole(Long id, User.Role role);
+    @Query("select user from User user where user.id =:userId and user.role.role =:role")
+    User getUserByIdAndRole(@Param("userId") Long userId, @Param("role") User.Role role);
 
-    @Query("select user from User user join user.marathons maraphon where user.role =:role and maraphon.id =:marathonId")
+    @Query("select user from User user join user.marathons maraphon where user.role.role =:role and maraphon.id =:marathonId")
     List<User> findByRoleAndMarathonId(@Param("role") User.Role role, @Param("marathonId") Long marathonId);
-
 }
