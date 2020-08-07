@@ -33,7 +33,7 @@ public class SprintServiceTest {
     public void addSprintToMarathonTest() {
         Sprint sprint = new Sprint();
         sprint.setTitle("newSprint");
-        sprint.setStartDate(LocalDateTime.now());
+        sprint.setStart(LocalDateTime.now());
         sprint.setFinish(LocalDateTime.now());
         sprintService.addSprintToMarathon(sprint, marathonRepository.getMarathonById(2L));
         assertEquals(sprintService.getSprintsByMarathonId(2L).get(0).getTitle(), sprint.getTitle());

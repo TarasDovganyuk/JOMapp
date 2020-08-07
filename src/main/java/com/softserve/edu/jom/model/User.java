@@ -11,15 +11,23 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "users")
 @EqualsAndHashCode(exclude = "marathons")
 public class User implements UserDetails {
-    public enum Role {
-        MENTOR, TRAINEE
+    public enum Role implements GrantedAuthority {
+        MENTOR, TRAINEE;
+
+        @Override
+        public String getAuthority() {
+            return name();
+        }
     }
 
     @Id
@@ -58,7 +66,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(role);
+        return Collections.singletonList(role.getRole());
     }
 
     @Override

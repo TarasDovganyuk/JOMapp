@@ -21,7 +21,7 @@ public class SprintRepositoryTest {
     @Test
     public void getSprintByIdTest() {
         Sprint actual = sprintRepository.getSprintById(2L);
-        LocalDateTime startDate = actual.getStartDate();
+        LocalDateTime startDate = actual.getStart();
         LocalDateTime endDate = actual.getFinish();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         assertEquals("2020-07-09", startDate.format(formatter));

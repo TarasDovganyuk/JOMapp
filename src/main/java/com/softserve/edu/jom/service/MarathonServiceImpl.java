@@ -4,6 +4,7 @@ import com.softserve.edu.jom.exception.MarathonIsNotEmptyException;
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.repository.MarathonRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,12 @@ public class MarathonServiceImpl implements MarathonService {
     }
 
     @Override
+    public List<Marathon> getMarathonsByUserId(Long id) {
+        Validate.notNull(id, "User id is null");
+        return marathonRepository.findByUserId(id);
+    }
+
+    @Override
     public List<Marathon> getAll() {
         return marathonRepository.findAll();
     }
@@ -38,8 +45,8 @@ public class MarathonServiceImpl implements MarathonService {
         if (!marathon.getUsers().isEmpty() || !marathon.getSprints().isEmpty()) {
             log.error(String.format("Marathon deleting error. Marathon id = %d is not empty", id));
             throw new MarathonIsNotEmptyException(String
-                .format("Marathon id = %d is not empty. Remove students and sprints from marathon before deleting",
-                    id));
+                    .format("Marathon id = %d is not empty. Remove students and sprints from marathon before deleting",
+                            id));
         }
         marathonRepository.deleteMarathonById(id);
     }

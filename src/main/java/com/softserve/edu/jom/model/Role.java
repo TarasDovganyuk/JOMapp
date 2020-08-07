@@ -1,8 +1,9 @@
 package com.softserve.edu.jom.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,7 +13,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class Role implements GrantedAuthority {
+@NoArgsConstructor
+public class Role   {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,9 +25,4 @@ public class Role implements GrantedAuthority {
 
     @OneToMany(mappedBy = "role")
     private Set<User> users = new HashSet<>(0);
-
-    @Override
-    public String getAuthority() {
-        return role != null ? role.name() : null;
-    }
 }

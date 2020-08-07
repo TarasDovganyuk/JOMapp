@@ -20,7 +20,7 @@ public class Sprint {
     private Long id;
 
     @NotNull
-    private LocalDateTime startDate;
+    private LocalDateTime start;
 
     @NotNull
     private LocalDateTime finish;

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,7 @@ public class StudentController {
     public StudentController(UserService userService, MarathonService marathonService, RoleRepository roleRepository) {
         this.userService = userService;
         this.marathonService = marathonService;
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping("/students")
@@ -43,6 +45,7 @@ public class StudentController {
         return "students";
     }
 
+    
     @PostMapping("/addStudent")
     public String addStudent(Model model, @ModelAttribute(name = "student") @Valid User user, BindingResult bindingResult) {
         logger.info("Add new student %s %s", user.getFirstName(), user.getLastName());
@@ -57,6 +60,7 @@ public class StudentController {
 
     }
 
+   
     @GetMapping("/addStudent")
     public String showAddStudentPage(Model model) {
         logger.info("Show add new student page");
@@ -66,6 +70,7 @@ public class StudentController {
         return "changeStudent";
     }
 
+    
     @GetMapping("/students/{marathon_id}")
     public String getStudentsByMarathonId(@PathVariable(name = "marathon_id") Long marathon_id, Model model) {
         logger.info("Get all students for marathon with id=%d", marathon_id);
@@ -76,6 +81,7 @@ public class StudentController {
         return "students";
     }
 
+    
     @GetMapping("/students/{marathon_id}/delete/{student_id}")
     public String deleteStudentFromMarathon(@PathVariable(name = "marathon_id") Long marathon_id, @PathVariable(name = "student_id") Long student_id) {
         logger.info("Remove student with id=%d from marathon with id=%d", student_id, marathon_id);
@@ -88,6 +94,7 @@ public class StudentController {
         return "redirect:/students/" + marathon_id;
     }
 
+    
     @PostMapping("/students/{marathon_id}/add")
     public String saveStudentToMarathon(Model model, @ModelAttribute(name = "student") @Valid User user, BindingResult bindingResult,
                                         @PathVariable(name = "marathon_id") Long marathon_id) {
@@ -103,6 +110,7 @@ public class StudentController {
         return "redirect:/students/" + marathon_id;
     }
 
+    
     @GetMapping("/students/{marathon_id}/add")
     public String addStudentToMarathon(Model model, @PathVariable(name = "marathon_id") Long marathon_id) {
         logger.info("Show page to add new student to marathon with id=%d", marathon_id);
@@ -114,6 +122,7 @@ public class StudentController {
         return "changeStudent";
     }
 
+    
     @GetMapping("/students/{marathon_id}/edit/{student_id}")
     public String showEditStudentPage(Model model, @PathVariable(name = "marathon_id") Long marathon_id, @PathVariable(name = "student_id") Long student_id) {
         logger.info("Show edit student page for student with id=%d and marathon with id=%d", student_id, marathon_id);
@@ -125,6 +134,7 @@ public class StudentController {
         return "changeStudent";
     }
 
+    
     @PostMapping("/students/{marathon_id}/edit/{student_id}")
     public String editStudentPage(Model model, @PathVariable(name = "marathon_id") Long marathon_id,
                                   @PathVariable(name = "student_id") Long student_id,

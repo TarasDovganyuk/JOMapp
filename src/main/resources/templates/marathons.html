@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8"/>
     <title>Marathons page</title>
@@ -14,21 +15,23 @@
     <table border="1">
         <tr>
             <th>Marathons</th>
-            <th>Actions</th>
+            <th sec:authorize="hasAuthority('MENTOR')">Actions</th>
         </tr>
         <tr th:each="marathon: ${marathons}">
             <td>
-                <a th:text="${marathon.title}" th:href="@{students/{id}(id=${marathon.id})}"></a>
+                <a sec:authorize="hasAuthority('MENTOR')" th:text="${marathon.title}"
+                   th:href="@{students/{id}(id=${marathon.id})}"></a>
+                <a sec:authorize="hasAuthority('TRAINEE')" th:text="${marathon.title}"
+                   th:href="@{sprints/{id}(id=${marathon.id})}"></a>
+
             </td>
-            <td>
+            <td sec:authorize="hasAuthority('MENTOR')">
                 <a th:href="@{edit/{id}(id=${marathon.id})}"> Edit | </a>
                 <a th:href="@{delete/{id}(id=${marathon.id})}"> Close </a>
             </td>
         </tr>
     </table>
-
     <br><br>
-
 </div>
 </body>
 </html>

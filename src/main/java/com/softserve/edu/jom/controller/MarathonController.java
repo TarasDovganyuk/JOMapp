@@ -2,22 +2,26 @@ package com.softserve.edu.jom.controller;
 
 import com.softserve.edu.jom.exception.MarathonIsNotEmptyException;
 import com.softserve.edu.jom.model.Marathon;
+import com.softserve.edu.jom.model.User;
 import com.softserve.edu.jom.service.MarathonService;
-import java.util.stream.Collectors;
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -33,7 +37,14 @@ public class MarathonController {
     @GetMapping("/marathons")
     public String getAllMarathons(Model model) {
         log.info("Get all marathons");
-        List<Marathon> marathons = marathonService.getAll();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Collection<? extends GrantedAuthority> roles = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        List<Marathon> marathons;
+        if (roles.size() == 1 && roles.iterator().next() == User.Role.TRAINEE) {
+            marathons = marathonService.getMarathonsByUserId(user.getId());
+        } else {
+            marathons = marathonService.getAll();
+        }
         model.addAttribute("marathons", marathons);
         return "marathons";
     }
@@ -78,6 +89,7 @@ public class MarathonController {
         return "redirect:/marathons";
     }
 
+
     @GetMapping("/addMarathon")
     public String addMarathon(Model model) {
         log.info("Add marathon");
@@ -113,7 +125,7 @@ public class MarathonController {
 
     private String getErrorMessage(BindingResult bindingResult) {
         return bindingResult.getFieldErrors().stream()
-            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-            .collect(Collectors.joining(";"));
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.joining(";"));
     }
 }

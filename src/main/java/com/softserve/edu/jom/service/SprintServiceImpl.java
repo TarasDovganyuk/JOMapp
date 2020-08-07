@@ -35,12 +35,12 @@ public class SprintServiceImpl implements SprintService {
     public boolean addSprintToMarathon(Sprint sprint, Marathon marathon) {
         Sprint newSprint = new Sprint();
         Validate.notNull(sprint.getTitle(), "Title must be not null");
-        Validate.notNull(sprint.getStartDate(), "Start date must be not null");
+        Validate.notNull(sprint.getStart(), "Start date must be not null");
         Validate.notNull(sprint.getFinish(), "Finish date must be not null");
 
         newSprint.setTitle(sprint.getTitle());
         newSprint.setMarathon(marathon);
-        newSprint.setStartDate(sprint.getStartDate());
+        newSprint.setStart(sprint.getStart());
         newSprint.setFinish(sprint.getFinish());
 
         return sprintRepository.save(newSprint) != null;
@@ -52,9 +52,9 @@ public class SprintServiceImpl implements SprintService {
         Sprint newSprint = new Sprint();
 
         Validate.notNull(sprint.getTitle(), "Title must be not null");
-        Validate.notNull(sprint.getStartDate(), "Start date must be not null");
+        Validate.notNull(sprint.getStart(), "Start date must be not null");
         Validate.notNull(sprint.getFinish(), "Finish date must be not null");
-        newSprint.setStartDate(sprint.getStartDate());
+        newSprint.setStart(sprint.getStart());
         newSprint.setFinish(sprint.getFinish());
         newSprint.setTitle(sprint.getTitle());
         if (sprint.getMarathon() != null) {

@@ -11,7 +11,8 @@
 <form th:object="${user}" method="POST">
     <table>
         <input type="hidden" th:field="*{id}" id="id">
-        <input type="hidden" th:field="*{role}" id="role">
+        <input type="hidden" th:field="*{role.id}" id="roleId">
+        <input type="hidden" th:field="*{role.role}" id="role">
         <tr>
             <td>
                 <label for="firstName">First Name: </label>
