@@ -9,8 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional
+@PreAuthorize("hasAuthority('MENTOR')")
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private MarathonRepository marathonRepository;
@@ -119,14 +119,5 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public void setBCryptPasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        User user = userRepository.getUserByEmail(userName);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found!");
-        }
-        return user;
     }
 }
