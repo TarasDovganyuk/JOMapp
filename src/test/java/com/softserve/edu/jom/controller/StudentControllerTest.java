@@ -2,6 +2,7 @@ package com.softserve.edu.jom.controller;
 
 import com.softserve.edu.jom.JomApplication;
 import com.softserve.edu.jom.model.User;
+import com.softserve.edu.jom.repository.RoleRepository;
 import com.softserve.edu.jom.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class StudentControllerTest {
     private MockMvc mockMvc;
     private UserService userService;
+    protected RoleRepository roleRepository;
 
     @Autowired
     public void setMockMvc(MockMvc mockMvc) {
@@ -38,6 +40,10 @@ public class StudentControllerTest {
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+    @Autowired
+    public void setRoleRepository(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 
     @Test
@@ -73,7 +79,7 @@ public class StudentControllerTest {
     @Test
     public void showAddStudentPageTest() throws Exception {
         User expectedUser = new User();
-        expectedUser.setRole(User.Role.TRAINEE);
+        expectedUser.setRole(roleRepository.getByRole(User.Role.TRAINEE));
         mockMvc.perform(get("/addStudent"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attributeExists("user"))
@@ -138,7 +144,7 @@ public class StudentControllerTest {
     public void showAddStudentToMarathon() throws Exception {
         Long marathonId = 1L;
         User expectedUser = new User();
-        expectedUser.setRole(User.Role.TRAINEE);
+        expectedUser.setRole(roleRepository.getByRole(User.Role.TRAINEE));
         mockMvc.perform(MockMvcRequestBuilders.get("/students/{marathon_id}/add", marathonId))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attributeExists("user"))
@@ -156,7 +162,7 @@ public class StudentControllerTest {
         user.setLastName("Smith");
         user.setEmail("alex.smith@gmail.com");
         user.setPassword("asdasdsd");
-        user.setRole(User.Role.TRAINEE);
+        user.setRole(roleRepository.getByRole(User.Role.TRAINEE));
         return user;
     }
 }

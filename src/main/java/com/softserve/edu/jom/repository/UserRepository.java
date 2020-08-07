@@ -14,6 +14,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User getUserById(Long id);
 
+    User getUserByEmail(String email);
+
     User getUserByIdAndRole(Long id, User.Role role);
 
     @Query("select user from User user join user.marathons maraphon where user.role =:role and maraphon.id =:marathonId")

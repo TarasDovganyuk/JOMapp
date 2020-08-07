@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Title Thymeleaf</title>
@@ -9,5 +9,8 @@
 <h1 class="info-title">Welcome to Marathons</h1>
 <a href="/marathons">Show marathons</a> | <a href="/students">Show students</a>
 <script src="/js/main.js"></script>
+<!--<p th:text="'Header name:' +  ${_csrf.headerName}"></p>-->
+<!--<p th:text="'Parameter name:' + ${_csrf.parameterName}"></p>-->
+<!--<p th:text="'CSRF Token:' + ${_csrf.token}"></p>-->
 </body>
 </html>

@@ -1,18 +1,20 @@
 package com.softserve.edu.jom;
 
-import com.softserve.edu.jom.model.*;
-import com.softserve.edu.jom.service.*;
+import com.softserve.edu.jom.model.Role;
+import com.softserve.edu.jom.model.User;
+import com.softserve.edu.jom.repository.RoleRepository;
+import com.softserve.edu.jom.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 
 @SpringBootApplication
 public class JomApplication implements CommandLineRunner {
-//    private UserService userService;
+    private UserService userService;
+    private RoleRepository roleRepository;
 //    private MarathonService marathonService;
 //    private SprintService sprintService;
 //    private TaskService taskService;
@@ -28,14 +30,26 @@ public class JomApplication implements CommandLineRunner {
 //        this.progressService = progressService;
 //    }
 
+    @Autowired
+    public JomApplication(UserService userService, RoleRepository roleRepository) {
+        this.userService = userService;
+        this.roleRepository = roleRepository;
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(JomApplication.class, args);
     }
 
     @Transactional
     public void run(String... arg) throws Exception {
-//        addMentors();
-//        addStudents();
+        Role mentorRole = new Role();
+        mentorRole.setRole(User.Role.MENTOR);
+        roleRepository.save(mentorRole);
+        Role traineeRole = new Role();
+        traineeRole.setRole(User.Role.TRAINEE);
+        roleRepository.save(traineeRole);
+        addMentors();
+        addStudents();
 //        getAllStudents();
 //        addUpdateDeleteMarathons();
 //        addSprintsToMarathon(1L);
@@ -51,34 +65,34 @@ public class JomApplication implements CommandLineRunner {
 //        removeUserFromMarathon();
     }
 
-//    private void addMentors() {
-//        for (int i = 0; i < 10; i++) {
-//            User user = new User();
-//            user.setPassword("qwertyqwert123");
-//            user.setRole(User.Role.MENTOR);
-//            user.setFirstName("MentorName" + i);
-//            user.setLastName("MentorSurname" + i);
-//            user.setEmail("mentoruser" + i + "@gmail.com");
-//            userService.createOrUpdateUser(user);
-//
-//            User user1 = userService.getUserById(1L);
-//            System.out.println(user1);
-//        }
-//    }
-//
-//    private void addStudents() {
-//        for (int i = 0; i < 3; i++) {
-//            User user = new User();
-//            user.setPassword("qwertyqwert123");
-//            user.setRole(User.Role.TRAINEE);
-//            user.setFirstName("TraineeName" + i);
-//            user.setLastName("TraineeSurname" + i);
-//            user.setEmail("traineeUser" + i + "@gmail.com");
-//            userService.createOrUpdateUser(user);
-//        }
-//        User user1 = userService.getUserById(13L);
-//        System.out.println(user1);
-//    }
+    private void addMentors() {
+        for (int i = 0; i < 10; i++) {
+            User user = new User();
+            user.setPassword("12345");
+            user.setRole(roleRepository.getByRole(User.Role.MENTOR));
+            user.setFirstName("MentorName" + i);
+            user.setLastName("MentorSurname" + i);
+            user.setEmail("mentoruser" + i + "@gmail.com");
+            userService.createOrUpdateUser(user);
+
+            User user1 = userService.getUserById(1L);
+            System.out.println(user1);
+        }
+    }
+
+    private void addStudents() {
+        for (int i = 0; i < 3; i++) {
+            User user = new User();
+            user.setPassword("12345");
+            user.setRole(roleRepository.getByRole(User.Role.TRAINEE));
+            user.setFirstName("TraineeName" + i);
+            user.setLastName("TraineeSurname" + i);
+            user.setEmail("traineeUser" + i + "@gmail.com");
+            userService.createOrUpdateUser(user);
+        }
+        User user1 = userService.getUserById(13L);
+        System.out.println(user1);
+    }
 //
 //
 //    private void addUpdateDeleteMarathons() {

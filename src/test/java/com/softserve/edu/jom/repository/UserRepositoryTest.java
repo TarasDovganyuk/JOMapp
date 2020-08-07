@@ -24,10 +24,13 @@ public class UserRepositoryTest {
 
     UserRepository userRepository;
 
+    RoleRepository roleRepository;
+
     @Autowired
-    public UserRepositoryTest(TestEntityManager entityManager, UserRepository userRepository) {
+    public UserRepositoryTest(TestEntityManager entityManager, UserRepository userRepository, RoleRepository roleRepository) {
         this.entityManager = entityManager;
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Test
@@ -135,7 +138,7 @@ public class UserRepositoryTest {
         assertEquals("Gari", mentorList.get(0).getFirstName());
         assertEquals("Curl", mentorList.get(0).getLastName());
         assertEquals("qweee", mentorList.get(0).getPassword());
-        assertEquals(User.Role.MENTOR, mentorList.get(0).getRole());
+        assertEquals(User.Role.MENTOR, mentorList.get(0).getRole().getRole());
         assertEquals("gari@gmail.com", mentorList.get(0).getEmail());
     }
 
@@ -145,7 +148,7 @@ public class UserRepositoryTest {
         user.setLastName("Smith");
         user.setEmail("alex.smith@gmail.com");
         user.setPassword("asdasdsd");
-        user.setRole(User.Role.MENTOR);
+        user.setRole(roleRepository.getByRole(User.Role.MENTOR));
         return user;
     }
 }

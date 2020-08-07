@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,6 +27,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private MarathonRepository marathonRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<User> getAll() {
@@ -55,6 +59,7 @@ public class UserServiceImpl implements UserService {
                 existedUser.setRole(user.getRole());
                 return userRepository.save(existedUser);
             }
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             return userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
             log.error("Duplicate user email exception raised when trying to save user with email %s", user.getEmail());
@@ -109,5 +114,19 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public void setMarathonRepository(MarathonRepository marathonRepository) {
         this.marathonRepository = marathonRepository;
+    }
+
+    @Autowired
+    public void setBCryptPasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        User user = userRepository.getUserByEmail(userName);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found!");
+        }
+        return user;
     }
 }

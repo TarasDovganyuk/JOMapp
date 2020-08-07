@@ -1,6 +1,7 @@
 package com.softserve.edu.jom.service;
 
 import com.softserve.edu.jom.model.Marathon;
+import com.softserve.edu.jom.model.Role;
 import com.softserve.edu.jom.model.User;
 import com.softserve.edu.jom.repository.MarathonRepository;
 import com.softserve.edu.jom.repository.UserRepository;
@@ -160,7 +161,10 @@ public class UserServiceMockTest {
         user.setLastName("Smith");
         user.setEmail("alex.smith@gmail.com");
         user.setPassword("asdasdsd");
-        user.setRole(User.Role.MENTOR);
+        Role role= new Role();
+        role.setId(1L);
+        role.setRole(User.Role.MENTOR);
+        user.setRole(role);
         return user;
     }
 }

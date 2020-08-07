@@ -3,6 +3,7 @@ package com.softserve.edu.jom.controller;
 import com.softserve.edu.jom.exception.DuplicateUserEmailException;
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.model.User;
+import com.softserve.edu.jom.repository.RoleRepository;
 import com.softserve.edu.jom.service.MarathonService;
 import com.softserve.edu.jom.service.UserService;
 import org.slf4j.Logger;
@@ -27,9 +28,10 @@ public class StudentController {
     private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
     private UserService userService;
     private MarathonService marathonService;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public StudentController(UserService userService, MarathonService marathonService) {
+    public StudentController(UserService userService, MarathonService marathonService, RoleRepository roleRepository) {
         this.userService = userService;
         this.marathonService = marathonService;
     }
@@ -162,7 +164,7 @@ public class StudentController {
 
     private User createNewStudent() {
         User user = new User();
-        user.setRole(User.Role.TRAINEE);
+        user.setRole(roleRepository.getByRole(User.Role.TRAINEE));
         return user;
     }
 

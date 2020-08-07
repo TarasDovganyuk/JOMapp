@@ -1,7 +1,9 @@
 package com.softserve.edu.jom.service;
 
 import com.softserve.edu.jom.model.Marathon;
+import com.softserve.edu.jom.model.Role;
 import com.softserve.edu.jom.model.User;
+import com.softserve.edu.jom.repository.RoleRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -22,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserServiceDBTest {
     private UserService userService;
     private TestEntityManager entityManager;
+    private RoleRepository roleRepository;
     private static final String COUNT_QUERY_STRING = "select count(x) from %s x";
 
     @Autowired
@@ -32,6 +35,11 @@ public class UserServiceDBTest {
     @Autowired
     public void setEntityManager(TestEntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    @Autowired
+    public void setRoleRepository(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 
     @Test
@@ -45,7 +53,7 @@ public class UserServiceDBTest {
         user.setEmail(emai);
         String password = "asdasdsd";
         user.setPassword(password);
-        User.Role role = User.Role.MENTOR;
+        Role role = roleRepository.getByRole(User.Role.MENTOR);
         user.setRole(role);
         Long marathonId = 1L;
         long initialUserCount = count("User");
@@ -78,7 +86,7 @@ public class UserServiceDBTest {
         entityManager.flush();
         long currentUserCount = count("User");
         long currentMarathonCount = count("Marathon");
-        User currentUser =  entityManager.find(User.class, userId);
+        User currentUser = entityManager.find(User.class, userId);
         entityManager.refresh(currentUser);
         int currentUserMarathonCount = currentUser.getMarathons().size();
         assertEquals(initialUserCount, currentUserCount);
