@@ -1,5 +1,6 @@
 package com.softserve.edu.jom.service;
 
+import com.softserve.edu.jom.controller.WithMockCustomUser;
 import com.softserve.edu.jom.model.Marathon;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ public class MarathonServiceTest {
     }
 
     @Test
+    @WithMockCustomUser
     public void updateMarathon() {
         Marathon actual = marathonService.getMarathonById(2L);
         actual.setTitle("JavaScript Online Marathon Updated");
@@ -32,6 +34,7 @@ public class MarathonServiceTest {
     }
 
     @Test
+    @WithMockCustomUser
     public void deleteMarathonTest() {
         Marathon actual = marathonService.getMarathonById(3L);
         marathonService.deleteMarathonById(3L);

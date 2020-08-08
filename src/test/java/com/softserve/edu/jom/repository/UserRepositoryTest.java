@@ -109,7 +109,7 @@ public class UserRepositoryTest {
         assertEquals("Mariana", user.getFirstName());
         assertEquals("Kuzma", user.getLastName());
         assertEquals("qweee2", user.getPassword());
-        assertEquals(User.Role.TRAINEE, user.getRole());
+        assertEquals(User.Role.TRAINEE, user.getRole().getRole());
         assertEquals("mari@gmail.com", user.getEmail());
     }
 

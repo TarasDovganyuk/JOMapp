@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@WithMockUser(authorities = {"MENTOR"})
 public class UserServiceMockTest {
     private UserService userService;
     @MockBean
@@ -161,7 +163,7 @@ public class UserServiceMockTest {
         user.setLastName("Smith");
         user.setEmail("alex.smith@gmail.com");
         user.setPassword("asdasdsd");
-        Role role= new Role();
+        Role role = new Role();
         role.setId(1L);
         role.setRole(User.Role.MENTOR);
         user.setRole(role);

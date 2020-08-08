@@ -34,6 +34,7 @@ public class MarathonControllerTest {
     }
 
     @Test
+    @WithMockCustomUser
     public void getAllMarathonsTest() throws Exception {
         List<Marathon> expected = marathonService.getAll();
 

@@ -1,5 +1,6 @@
 package com.softserve.edu.jom.service;
 
+import com.softserve.edu.jom.controller.WithMockCustomUser;
 import com.softserve.edu.jom.model.Marathon;
 import com.softserve.edu.jom.model.Role;
 import com.softserve.edu.jom.model.User;
@@ -43,6 +44,7 @@ public class UserServiceDBTest {
     }
 
     @Test
+    @WithMockCustomUser
     public void testAddNewUserToMarathon() {
         User user = new User();
         String fisrtName = "Alex";
@@ -76,6 +78,7 @@ public class UserServiceDBTest {
     }
 
     @Test
+    @WithMockCustomUser
     public void testRemoveUserFromMarathon() {
         Long userId = 1L;
         Long marathonId = 1L;

@@ -20,8 +20,8 @@ public class Marathon {
     private Long id;
 
     @NotBlank(message = "Title must be populated")
-    @Size(min = 2, max = 20, message =
-        "Title must be between 2 and 20 characters")
+    @Size(min = 2, max = 50, message =
+        "Title must be between 2 and 50 characters")
     private String title;
 
     @ToString.Exclude

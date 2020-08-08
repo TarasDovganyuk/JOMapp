@@ -6,7 +6,7 @@ INSERT INTO marathon (id, title) VALUES (1, 'Java Online Marathon'), (2, 'JavaSc
 
 INSERT INTO marathon_user(marathon_id, user_id) VALUES (1, 1),  (1, 3), (1, 4),(2, 2),(2, 3),(2, 5);
 
-INSERT INTO sprint(id, start_date, finish, title, marathon_id) VALUES (1, '2020-07-05', '2020-07-08', 'Spring MVC', 1), (2, '2020-07-09', '2020-07-12', 'Unit testing. Logging', 1), (3, '2020-08-07', '2020-08-10', 'Spring. Exception handling', 1);
+INSERT INTO sprint(id, start, finish, title, marathon_id) VALUES (1, '2020-07-05', '2020-07-08', 'Spring MVC', 1), (2, '2020-07-09', '2020-07-12', 'Unit testing. Logging', 1), (3, '2020-08-07', '2020-08-10', 'Spring. Exception handling', 1);
 
 INSERT INTO task(id, created, title, updated, sprint_id) VALUES (1, '2020-07-05', 'Quiz', '2020-07-06', 1),  (2, '2020-07-05', 'Practical task', '2020-07-06', 1), (3, '2020-07-09', 'Quiz', '2020-07-10', 2);
 

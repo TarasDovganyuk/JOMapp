@@ -1,16 +1,15 @@
 package com.softserve.edu.jom.controller;
 
-import com.softserve.edu.jom.JomApplication;
 import com.softserve.edu.jom.model.User;
 import com.softserve.edu.jom.repository.RoleRepository;
 import com.softserve.edu.jom.service.UserService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -19,18 +18,22 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = JomApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-@ExtendWith(SpringExtension.class)
 @AutoConfigureTestDatabase
 @Transactional
+@WithMockCustomUser
+@AutoConfigureTestEntityManager
 public class StudentControllerTest {
     private MockMvc mockMvc;
     private UserService userService;
-    protected RoleRepository roleRepository;
+    private RoleRepository roleRepository;
+    private TestEntityManager entityManager;
 
     @Autowired
     public void setMockMvc(MockMvc mockMvc) {
@@ -41,16 +44,22 @@ public class StudentControllerTest {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
+
     @Autowired
     public void setRoleRepository(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 
+    @Autowired
+    public void setEntityManager(TestEntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
     @Test
     public void getAllStudentTest() throws Exception {
         List<User> expected = userService.getAllByRole("TRAINEE");
-
-        mockMvc.perform(get("/students"))
+        User logUser = userService.getUserById(4L);
+        mockMvc.perform(get("/students").with(user(logUser)).with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attributeExists("students"))
                 .andExpect(MockMvcResultMatchers.model().attribute("students", expected));
@@ -126,7 +135,7 @@ public class StudentControllerTest {
                 .flashAttr("student", user))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(redirectedUrl("/students/" + marathonId));
-        User updatedUser = userService.getUserById(userId);
+        User updatedUser = entityManager.find(User.class, userId);
         assertEquals(expectedEmail, updatedUser.getEmail());
     }
 
@@ -138,7 +147,6 @@ public class StudentControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(redirectedUrl("/students/" + marathonId));
     }
-
 
     @Test
     public void showAddStudentToMarathon() throws Exception {

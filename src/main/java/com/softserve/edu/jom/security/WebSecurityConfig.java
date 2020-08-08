@@ -24,8 +24,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .mvcMatchers("/addMarathon", "/addStudent", "/students/**").hasRole(User.Role.MENTOR.name())
+        http.csrf().disable()
+                .authorizeRequests()
+                .mvcMatchers("/addMarathon", "/addStudent", "/students/**").hasAuthority(User.Role.MENTOR.name())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
