@@ -58,8 +58,7 @@ public class StudentControllerTest {
     @Test
     public void getAllStudentTest() throws Exception {
         List<User> expected = userService.getAllByRole("TRAINEE");
-        User logUser = userService.getUserById(4L);
-        mockMvc.perform(get("/students").with(user(logUser)).with(csrf()))
+        mockMvc.perform(get("/students"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attributeExists("students"))
                 .andExpect(MockMvcResultMatchers.model().attribute("students", expected));
