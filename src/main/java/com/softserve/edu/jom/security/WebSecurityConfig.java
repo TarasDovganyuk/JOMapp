@@ -1,5 +1,6 @@
 package com.softserve.edu.jom.security;
 
+import com.softserve.edu.jom.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +24,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().authenticated()
+        http.authorizeRequests()
+                .mvcMatchers("/addMarathon", "/addStudent", "/students/**").hasRole(User.Role.MENTOR.name())
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login-form")

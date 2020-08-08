@@ -6,6 +6,7 @@ import com.softserve.edu.jom.repository.MarathonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -34,11 +35,13 @@ public class MarathonServiceImpl implements MarathonService {
         return marathonRepository.findByUserId(id);
     }
 
+    @PreAuthorize("hasAuthority('MENTOR')")
     @Override
     public List<Marathon> getAll() {
         return marathonRepository.findAll();
     }
 
+    @PreAuthorize("hasAuthority('MENTOR')")
     @Override
     public void deleteMarathonById(Long id) {
         Marathon marathon = getMarathonById(id);
@@ -51,6 +54,7 @@ public class MarathonServiceImpl implements MarathonService {
         marathonRepository.deleteMarathonById(id);
     }
 
+    @PreAuthorize("hasAuthority('MENTOR')")
     @Override
     public Marathon createOrUpdate(Marathon marathon) {
         if (marathon.getId() != null) {
